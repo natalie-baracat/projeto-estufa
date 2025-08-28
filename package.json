@@ -1,0 +1,17 @@
+{
+  "name": "projeto-final-senai-2025",
+  "version": "1.0.0",
+  "description": "Projeto final SENAI",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API"
+  ],
+  "author": "Natalie Baracat",
+  "license": "ISC"
+}
