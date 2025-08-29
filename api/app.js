@@ -32,6 +32,15 @@ app.use("/usuarios", userRotas)
 /*~~~~~~~~~~~ ROTAS RELATORIOS ~~~~~~~~~~~~~~~~~*/
 app.use("/relatorios", relatorioRotas)
 
+/*~~~~~~~~~~~ ROTAS SENSORES ~~~~~~~~~~~~~~~~~~~*/
+app.use("/sensores", sensoresRotas)
+
+/*~~~~~~~~~~~ ROTAS ATUADORES ~~~~~~~~~~~~~~~~~*/
+app.use("/atuadores", atuadoresRotas)
+
+/*~~~~~~~~~~~ ROTAS LEITURAS ~~~~~~~~~~~~~~~~~*/
+app.use("/leituras", leiturasRotas)
+
 
 const porta = 3000
 app.listen(porta, () => {
