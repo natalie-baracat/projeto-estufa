@@ -27,8 +27,16 @@ const swaggerDefinition = {
             description: 'Rotas para registro, atualização e exclusão de relatórios'
         },
         {
-            name: 'Leituras',
-            description: 'Rotas para criação, atualização e desativação de relatórios'
+            name: 'Atuadores',
+            description: 'Rotas para visualização e edição de cada atuador em cada cultivo'
+        },
+        {
+            name: 'Sensores',
+            description: 'Rotas para visualização de cada sensor em cada cultivo'
+        },
+        {
+            name: 'Leituras dos sensores',
+            description: 'Rotas para visualização das leituras do sensor em cada cultivo'
         }
     ],
     components: {
@@ -234,7 +242,7 @@ const swaggerDefinition = {
             }
         },
 
-        // RELATORIOS
+        // RELATORIOS ****************************************
         '/relatorios/new': {
             post: {
                 tags: ['Relatorios'],
@@ -260,6 +268,44 @@ const swaggerDefinition = {
             },
             
         },
+
+        '/relatorios': {
+            get: {
+                tags: ['Relatorios'],
+                summary: 'Listar todos os relatórios',
+                description: 'Método utilizado para listar todos os relatórios cadastrados',
+                security: [
+                    {
+                        bearerAuth: [],
+                    },
+                ],
+                responses: {
+                    '200': {
+                        description: 'Lista de relatórios',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            titulo: { type: 'string', example: 'Desempenho dos atuadores nas últimas horas (28/07)' },
+                                            id_usuario: { type: 'integer', example: 7 },
+                                            id_cultivo: { type: 'integer', example: 3 },
+                                            conteudo: { type: 'string', example: 'Relatório aqui' }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    '500': {
+                        description: 'Erro interno do servidor'
+                    }
+                }
+            },
+        },
+
 
         '/relatorios/editar/:id': {
             put: {
@@ -311,48 +357,148 @@ const swaggerDefinition = {
             }
         },
 
-    //     '/categorias': {
-    //         get: {
-    //             tags: ['Categorias'],
-    //             summary: 'Listar todas as categorias',
-    //             description: 'Método utilizado para listar todas as categorias cadastrados',
-    //             security: [
-    //                 {
-    //                     bearerAuth: [],
-    //                 },
-    //             ],
-    //             responses: {
-    //                 '200': {
-    //                     description: 'Lista de categorias',
-    //                     content: {
-    //                         'application/json': {
-    //                             schema: {
-    //                                 type: 'array',
-    //                                 items: {
-    //                                     type: 'object',
-    //                                     properties: {
-    //                                         nome: { type: 'string', example: 'Alimentação' },
-    //                                         tipo_transacao: { type: 'string', example: 'SAIDA' },
-    //                                         gasto_fixo: { type: 'boolean', example: false },
-    //                                         id_usuario: { type: 'integer', example: 7 },
-    //                                         cor: { type: 'string', example: '#B00B5F' },
-    //                                         icone: { type: 'string', example: 'utensils' }
-    //                                     }
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 },
-    //                 '500': {
-    //                     description: 'Erro interno do servidor'
-    //                 }
-    //             }
-    //         },
-    //     },
+        // ATUADORES *****************************************
+        '/atuadores': {
+            get: {
+                tags: ['Atuadores'],
+                summary: 'Listar todos os atuadores',
+                description: 'Método utilizado para listar todos os atuadores cadastrados',
+                security: [
+                    {
+                        bearerAuth: [],
+                    },
+                ],
+                responses: {
+                    '200': {
+                        description: 'Lista de atuadores',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            nome: { type: 'string', example: 'Válvula Solenoide 12V 3/4' },
+                                            status: { type: 'string', example: 'desligado' },
+                                            descricao: { type: 'string', example: 3 },
+                                            porta_controle: { type: 'integer', example: 12 },
+                                            tipo: { type: 'string', example: 'umidade' },
+                                            cultivo: { type: 'string', example: 'morango' }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    '500': {
+                        description: 'Erro interno do servidor'
+                    }
+                }
+            },
+        },
 
-    //     '/categorias/{id_categoria}': {
+        '/atuadores/editar/:id': {
+            patch: {
+                tags: ['Atuadores'],
+                summary: 'Editar atuador',
+                description: 'Editar de atuador',
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                        status: { type: 'string', example: 'ligado' },
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            
+        },
+
+        // SENSORES ******************************************
+        '/sensores': {
+            get: {
+                tags: ['Sensores'],
+                summary: 'Listar todos os sensores',
+                description: 'Método utilizado para listar todos os sensores cadastrados',
+                security: [
+                    {
+                        bearerAuth: [],
+                    },
+                ],
+                responses: {
+                    '200': {
+                        description: 'Lista de sensores',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            nome: { type: 'string', example: 'Sensor DHT22' },
+                                            img_sensor: { type: 'string', example: 'sensor1.jpg' },
+                                            descricao: { type: 'string', example: 'sensor de temperatura e umidade' },
+                                            ativo: { type: 'string', example: 'inativo' },
+                                            tipo: { type: 'string', example: 'temperatura e umidade' },
+                                            cultivo: { type: 'string', example: 'morango' }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    '500': {
+                        description: 'Erro interno do servidor'
+                    }
+                }
+            },
+        },
+        
+        // LEITURAS ******************************************
+
+        '/leituras': {
+            get: {
+                tags: ['Leituras'],
+                summary: 'Listar todas as leituras dos sensores',
+                description: 'Método utilizado para listar todas as leituras lidas nos sensores',
+                security: [
+                    {
+                        bearerAuth: [],
+                    },
+                ],
+                responses: {
+                    '200': {
+                        description: 'Lista de leituras',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            valor: { type: 'float', example: 1232.5 },
+                                            data_hora_leitura: { type: 'string', example: 'SAIDA' }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    '500': {
+                        description: 'Erro interno do servidor'
+                    }
+                }
+            },
+        },
+
+    //     '/leituras/{id_categoria}': {
     //         delete: {
-    //             tags: ['Categorias'],
+    //             tags: ['leituras'],
     //             summary: 'Desativar categoria',
     //             description: 'Rota para desativar categoria',
     //             security: [
@@ -377,9 +523,9 @@ const swaggerDefinition = {
     //         }
     //     },
 
-    //     'categorias/editar/{id_categoria}': {
+    //     'leituras/editar/{id_categoria}': {
     //         patch: {
-    //             tags: ['Categorias'],
+    //             tags: ['leituras'],
     //             summary: 'editar novo usuário',
     //             description: 'Método utilizado para editar novos usuários',
     //             requestBody: {

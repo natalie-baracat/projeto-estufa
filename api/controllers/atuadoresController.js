@@ -1,24 +1,27 @@
 import { BD } from "../db.js";
 
 class atuadoresController {
-    // rota de leitura para exbir as atuadores dos sensores vindas do MQTT
+    // rota de leitura para exbir os atuadores dos sensores vindas do MQTT
     static async listar(req, res) {
         try {
             // obs: testar e ver depois como conectar tambem a tabela de CULTIVOS. nao acho que esse seja o modo certo
             // !!!! obs2: MUDAR O NOME DA TABELA PARA ***atuadores_sensor*** senao nao vai funcionar !!!!!
             const atuadores = await BD.query(`
-                SELECT atuadores_sensor.valor, atuadores_sensor.id_sensor, atuadores_sensor.data_hora_leitura, s.nome AS sensor, s.unidade, s.tipo, c.valor AS cultivo
+                SELECT 
+                    atuadores_sensor.nome,
+                    atuadores_sensor.status,
+                    atuadores_sensor.descricao,
+                    atuadores_sensor.porta_controle,
+                    atuadores_sensor.tipo,
+                    c.nome AS cultivo
                     FROM atuadores_sensor
-                    INNER JOIN sensores AS s
-                    INNER JOIN cultivo AS c 
-                    ON atuadores_sensor.id_sensor = s.id_sensor
-                    WHERE s.ativo = true
-                    ORDER BY data_hora_leitura DESC
+                    JOIN cultivos AS c ON atuadores_sensor.id_cultivo = c.id_cultivo
+                   
                 `)
             return res.status(200).json(atuadores.rows)
         } catch (error) {
             res.status(500).json({message:
-                "Erro ao listar sensores — ", error: error.message
+                "Erro ao listar atuadores — ", error: error.message
             })            
         }
     }
@@ -27,8 +30,8 @@ class atuadoresController {
     // funçao para atualizar os valores de forma manual
     // obs: colocar uma autenticaçao de usuario e permissao talvez?
     static async editar(req, res) {
-        const { id_leitura } = req.params
-        const { data_hora_leitura, valor, id_sensor, tipo, unidade, ativo } = req.body
+        const { id_atuador } = req.params
+        const { status, nome, descricao, porta_controle, tipo } = req.body
 
         try {
             // inicializa arrays para armazenar os campos (ex: id_cultivo, id_sensor) e valores (ex: $1, $2, ... $n) a serem atualizados
@@ -36,42 +39,37 @@ class atuadoresController {
             const valores = []
 
             // verificar quais campos foram fornecidos
-            if (data_hora_leitura !== undefined) {
-                campos.push(`data_hora_leitura = $${valores.length + 1}`)
-                valores.push(data_hora_leitura)
+            if (status !== undefined) {
+                campos.push(`status = $${valores.length + 1}`)
+                valores.push(status)
             }
             
-            if (id_sensor !== undefined) {
-                campos.push(`id_sensor = $${valores.length + 1}`)
-                valores.push(id_sensor)
+            if (nome !== undefined) {
+                campos.push(`nome = $${valores.length + 1}`)
+                valores.push(nome)
             }
             
-            if (valor !== undefined) {
-                campos.push(`valor = $${valores.length + 1}`)
-                valores.push(valor)
+            if (descricao !== undefined) {
+                campos.push(`descricao = $${valores.length + 1}`)
+                valores.push(descricao)
             }
            
-            if (unidade !== undefined) {
-                campos.push(`unidade = $${valores.length + 1}`)
-                valores.push(unidade)
+            if (porta_controle !== undefined) {
+                campos.push(`porta_controle = $${valores.length + 1}`)
+                valores.push(porta_controle)
             }
-           
-            if (ativo !== undefined) {
-                campos.push(`ativo = $${valores.length + 1}`)
-                valores.push(ativo)
-            }
-
+        
             if(campos.length === 0) {
                 return res.status(400).json({message: "Nenhum campo adicionado para atualização"})
             }
 
             // adicionar o id ao final do array valores
-            valores.push(id_leitura)
+            valores.push(id_atuador)
 
             // montamos a query dinamicamente
             const query = `UPDATE atuadores_sensor
                             SET ${campos.join(", ")}
-                            WHERE id_leitura = $${valores.length}
+                            WHERE id_atuador = $${valores.length}
                             RETURNING *`
 
             // executando nossa query
@@ -79,7 +77,7 @@ class atuadoresController {
 
             // verifica se o sensor foi atualizado
             if(sensor.rows.length === 0) {
-                return res.status(404).json({message: "sensor não encontrado"})
+                return res.status(404).json({message: "Atuador não encontrado"})
             }
 
             // se tudo der certo

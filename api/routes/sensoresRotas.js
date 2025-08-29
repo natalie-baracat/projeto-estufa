@@ -1,10 +1,8 @@
 import express from "express"
-import sensoresController from "../controllers/sensoresControllers"
+import sensoresController from "../controllers/sensoresControllers-ESS025N1491325"
 const router = express.Router()
 
-router.post("/new", sensoresController.novo)
-router.get("/", sensoresController.listar)
-router.patch("/editar/:id", sensoresController.editar)
-router.delete("/:id", sensoresController.desativar)
+router.get("/sensores", sensoresController.listar)
+router.delete("/sensores/:id", sensoresController.desativar) // nao vai deletar, vai so colocar o estado dele como inativo
 
 export default router

@@ -9,6 +9,10 @@ import swaggerSpec from "./swagger.js"
 // rotas
 import userRotas from "./routes/userRotas.js"
 import relatorioRotas from "./routes/relatoriosRotas.js"
+import leiturasRotas from "./routes/leiturasRotas.js"
+import sensoresRotas from "./routes/sensoresRotas.js"
+import atuadoresRotas from "./routes/atuadoresRotas.js"
+
 
 const app = express()
 testarConexao()

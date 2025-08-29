@@ -1,6 +1,6 @@
 import { BD } from "../db.js";
 
-class relatorioController {
+class relatoriosController {
     static async novoRelatorio(req, res) {
 
         const { id_cultivo, data_relatorio, conteudo, id_usuario } = req.body
@@ -115,4 +115,4 @@ class relatorioController {
 }
 
 
-export default relatorioController
+export default relatoriosController
