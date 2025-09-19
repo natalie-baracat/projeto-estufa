@@ -1,7 +1,7 @@
 import express from "express"
-import leiturasController from "../controllers/leiturasController"
+import leiturasController from "../controllers/leiturasController.js"
 const router = express.Router()
 
-router.get("/leituras", leiturasController.listar)
+router.get("/", leiturasController.listar)
 
 export default router
