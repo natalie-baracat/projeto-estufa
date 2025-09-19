@@ -215,7 +215,7 @@ const swaggerDefinition = {
             },
         },
 
-'       /usuarios/{id}': {
+        '       /usuarios/{id}': {
             delete: {
                 tags: ['Usuarios'],
                 summary: 'Desativar usuario',
@@ -257,16 +257,45 @@ const swaggerDefinition = {
                                 required: ['titulo', 'id_usuario', 'id_cultivo', 'conteudo'],
                                 properties: {
                                     titulo: { type: 'string', example: 'Alteração média da temperatura' },
-                                    id_usuario: { type: 'integer', example: 7 },
-                                    id_cultivo: { type: 'integer', example: 2 },
+                                    id_usuario: { type: 'integer', example: 15 },
+                                    id_cultivo: { type: 'integer', example: 1 },
                                     conteudo: { type: 'string', example: 'Durante os últimos 7 dias, foi observada estabilidade na temperatura média da estufa de morangos 1.' }
                                 }
                             }
                         }
                     }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Relatório criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string", "example": "Relatório registrado com sucesso" },
+                                        "relatorio": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id_relatorio": { "type": "integer", "example": 10 },
+                                                "titulo": { "type": "string", "example": "Alteração média da temperatura" },
+                                                "id_usuario": { "type": "integer", "example": 7 },
+                                                "id_cultivo": { "type": "integer", "example": 2 },
+                                                "conteudo": { "type": "string", "example": "Durante os últimos 7 dias..." },
+                                                "data_relatorio": { "type": "string", "format": "date", "example": "2025-09-19" }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": { "description": "Erro de validação" },
+                    "500": { "description": "Erro interno do servidor" }
                 }
+
             },
-            
+
         },
 
         '/relatorios': {
@@ -307,7 +336,7 @@ const swaggerDefinition = {
         },
 
 
-        '/relatorios/editar/:id': {
+        '/relatorios/editar/:id_relatorio': {
             put: {
                 tags: ['Relatorios'],
                 summary: 'Editar relatorio',
@@ -327,14 +356,14 @@ const swaggerDefinition = {
                     }
                 }
             },
-            
+
         },
 
-        '/relatorios/{id}': {
+        '/relatorios/{id_relatorio}': {
             delete: {
                 tags: ['Relatorios'],
-                summary: 'Excluir categoria',
-                description: 'Rota para excluir categoria',
+                summary: 'Excluir relatorio',
+                description: 'Rota para excluir relatorio',
                 security: [
                     {
                         bearerAuth: []
@@ -342,7 +371,7 @@ const swaggerDefinition = {
                 ],
                 'parameters': [
                     {
-                        name: 'id_categoria',
+                        name: 'id_relatorio',
                         in: 'path', // caso queira passar como query use in: 'query'
                         required: true,
                         schema: {
@@ -409,14 +438,14 @@ const swaggerDefinition = {
                             schema: {
                                 type: 'object',
                                 properties: {
-                                        status: { type: 'string', example: 'ligado' },
+                                    status: { type: 'string', example: 'ligado' },
                                 }
                             }
                         }
                     }
                 }
             },
-            
+
         },
 
         // SENSORES ******************************************
@@ -458,12 +487,12 @@ const swaggerDefinition = {
                 }
             },
         },
-        
+
         // LEITURAS ******************************************
 
         '/leituras': {
             get: {
-                tags: ['Leituras'],
+                tags: ['Leituras dos sensores'],
                 summary: 'Listar todas as leituras dos sensores',
                 description: 'Método utilizado para listar todas as leituras lidas nos sensores',
                 security: [
@@ -496,64 +525,64 @@ const swaggerDefinition = {
             },
         },
 
-    //     '/leituras/{id_categoria}': {
-    //         delete: {
-    //             tags: ['leituras'],
-    //             summary: 'Desativar categoria',
-    //             description: 'Rota para desativar categoria',
-    //             security: [
-    //                 {
-    //                     bearerAuth: []
-    //                 }
-    //             ],
-    //             'parameters': [
-    //                 {
-    //                     name: 'id_categoria',
-    //                     in: 'path', // caso queira passar como query use in: 'query'
-    //                     required: true,
-    //                     schema: {
-    //                         type: 'integer'
-    //                     }
-    //                 }
-    //             ],
-    //             responses: {
-    //                 '200': { description: 'categoria desativado com sucesso' },
-    //                 '500': { description: 'Erro ao desativar categoria' }
-    //             }
-    //         }
-    //     },
+        //     '/leituras/{id_categoria}': {
+        //         delete: {
+        //             tags: ['leituras'],
+        //             summary: 'Desativar categoria',
+        //             description: 'Rota para desativar categoria',
+        //             security: [
+        //                 {
+        //                     bearerAuth: []
+        //                 }
+        //             ],
+        //             'parameters': [
+        //                 {
+        //                     name: 'id_categoria',
+        //                     in: 'path', // caso queira passar como query use in: 'query'
+        //                     required: true,
+        //                     schema: {
+        //                         type: 'integer'
+        //                     }
+        //                 }
+        //             ],
+        //             responses: {
+        //                 '200': { description: 'categoria desativado com sucesso' },
+        //                 '500': { description: 'Erro ao desativar categoria' }
+        //             }
+        //         }
+        //     },
 
-    //     'leituras/editar/{id_categoria}': {
-    //         patch: {
-    //             tags: ['leituras'],
-    //             summary: 'editar novo usuário',
-    //             description: 'Método utilizado para editar novos usuários',
-    //             requestBody: {
-    //                 required: true,
-    //                 content: {
-    //                     'application/json': {
-    //                         schema: {
-    //                             type: 'object',
-    //                             properties: {
-    //                                 gasto_fixo: { type: 'boolean', example: false }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             },
-    //             responses: {
-    //                 '200': {
-    //                     description: 'Usuário editado com sucesso'
-    //                 },
-    //                 '400': {
-    //                     description: 'Erro ao editar usuário'
-    //                 },
-    //                 '500': {
-    //                     description: 'Erro interno do servidor'
-    //                 }
-    //             }
-    //         },
-    //     },
+        //     'leituras/editar/{id_categoria}': {
+        //         patch: {
+        //             tags: ['leituras'],
+        //             summary: 'editar novo usuário',
+        //             description: 'Método utilizado para editar novos usuários',
+        //             requestBody: {
+        //                 required: true,
+        //                 content: {
+        //                     'application/json': {
+        //                         schema: {
+        //                             type: 'object',
+        //                             properties: {
+        //                                 gasto_fixo: { type: 'boolean', example: false }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             },
+        //             responses: {
+        //                 '200': {
+        //                     description: 'Usuário editado com sucesso'
+        //                 },
+        //                 '400': {
+        //                     description: 'Erro ao editar usuário'
+        //                 },
+        //                 '500': {
+        //                     description: 'Erro interno do servidor'
+        //                 }
+        //             }
+        //         },
+        //     },
     }
 }
 
