@@ -3,14 +3,17 @@ import { BD } from "../db.js";
 class relatoriosController {
     static async novoRelatorio(req, res) {
 
+        // ainda nao sei como, mas quando o usuario criar um novo relatorio, aparecerá que o relatorio foi de sua autoria. por isso eu requisito o id_usuario
+
+        // lembrando que relatorios automaticos serao feitos pela IA tambem!! nesse caso, ela aparecerá como "autor". se é que isso é possivel.
         const { id_cultivo, data_relatorio, conteudo, id_usuario } = req.body
 
         try {
-            const query = `INSERT INTO relatorios(id_cultivo, data_relatorio, titulo, conteudo, id_usuario) VALUES($1, $2, $3, $4)`
-            const valores = [id_cultivo, data_relatorio, titulo, conteudo, id_usuario]
+            const query = `INSERT INTO relatorios(id_cultivo, data_relatorio, conteudo, id_usuario) VALUES($1, $2, $3, $4)`
+            const valores = [id_cultivo, data_relatorio, conteudo, id_usuario]
             const resposta = await BD.query(query, valores)
 
-            res.status(201).json("Relatório registrado com sucesso")
+            res.status(201).json({message: "Relatório registrado com sucesso"})
 
         } catch (error) {
             console.error("Erro ao criar relatório", error)
@@ -25,7 +28,7 @@ class relatoriosController {
     static async listarTodos(req, res) {
         try {
             const relatorios = await BD.query(`
-                SELECT u.id_usuario, u.nome, u.sobrenome, r.id_usuario, r.titulo, r.conteudo, r.data_relatorio, r.id_cultivo, c.nome AS cultivo
+                SELECT u.id_usuario, u.nome, u.sobrenome, r.id_usuario, r.conteudo, r.data_relatorio, r.id_cultivo, c.nome AS cultivo
                     FROM relatorios AS r
                     JOIN usuarios AS u ON u.id_usuario = r.id_usuario
                     JOIN cultivos AS c ON c.id_cultivo = r.id_cultivo
@@ -40,7 +43,7 @@ class relatoriosController {
 
     // rota de atualizaçao INDIVIDUAL
     // funçao para atualizar os valores individualmente
-    static async editarRelatório(req, res) {
+    static async editarRelatorio(req, res) {
         const { id_relatorio } = req.params
         const { id_cultivo, conteudo, titulo} = req.body
 
@@ -60,11 +63,6 @@ class relatoriosController {
                 valores.push(conteudo)
             }
             
-            if (titulo !== undefined) {
-                campos.push(`titulo = $${valores.length + 1}`)
-                valores.push(titulo)
-            }
-
             if(campos.length === 0) {
                 return res.status(400).json({message: "Nenhum campo adicionado para atualização"})
             }

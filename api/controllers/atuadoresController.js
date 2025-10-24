@@ -1,3 +1,4 @@
+
 import { BD } from "../db.js";
 
 class atuadoresController {
@@ -89,23 +90,24 @@ class atuadoresController {
         }
     }
 
-//     static async desativar(req, res) {// rota de inativaçao
-//         const {id_leitura} = req.params
+    // a ideia é que seja possível ativar ou desativar os perifericos pelo proprio aplicativo
+    static async desativar(req, res) {// rota de inativaçao
+        const {id_leitura} = req.params
 
-//         try {
-//             const resultado = await BD.query (`
-//                 UPDATE atuadores_sensor
-//                 SET ativo = FALSE
-//                 WHERE id_leitura = $1
-//             `, [id_leitura])
+        try {
+            const resultado = await BD.query (`
+                UPDATE atuadores_sensor
+                SET ativo = FALSE
+                WHERE id_leitura = $1
+            `, [id_leitura])
     
-//             return res.status(200).json({message: "sensor desativado"})
+            return res.status(200).json({message: "Atuador agora está inativo."})
             
-//         } catch (error) {
-//             console.error("Erro ao desativar sensor: ", error)
-//             return res.status(500).json({message: "Erro ao desativar sensor", error: error.message})            
-//         }
-//     }
+        } catch (error) {
+            console.error("Erro ao desativar sensor: ", error)
+            return res.status(500).json({message: "Erro ao desativar sensor", error: error.message})            
+        }
+    }
 }
 
 

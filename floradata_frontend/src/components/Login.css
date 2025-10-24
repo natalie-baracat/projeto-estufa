@@ -1,0 +1,188 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    gap: 20px;
+}
+
+.login-box {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+     flex-direction: column;
+    border-radius: 8px;
+    align-items: center;
+    text-align: center;
+    width: 300px;
+}
+
+.login-logo {
+  display: block;
+  margin: 0 auto 20px auto; /* Centraliza e adiciona margem abaixo */
+  width: 100px;
+}
+
+
+.input-group {
+    position:relative;
+    margin-bottom: 15px;
+    text-align: left;
+    color: #333333
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px 8px 8px 35px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-button {
+    width: 100%;
+    background: #7BAE44; /* verdeClaro */
+    color: #432716; /* marrom */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: backfround-color 0.3s;
+}
+
+.login-button:hover {
+    background: #A0C57D; /* corBarraSelecao */
+}
+
+.clear-button {
+  width: 100%;
+  background-color: #F1E6A6; /* creme */ 
+  color: #432716; /* marrom */
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+  background-color: #b4d7a3; /* corBarraHover */
+}
+
+
+/* TITULOS */
+h1, h2, h3 {
+  color: #432716; /* corTitulo */
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Inter', sans-serif;
+}
+
+/* INPUTS e TEXTOS */
+body, p, label, input, button, a {
+/* p, label { */
+  color: #333333; /* corConteudo */
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1Login {
+  color: #432716; /* corTitulo */
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Inter', sans-serif;
+}
+
+
+
+.inputIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  color: #888;
+  font-size: 1.2em;
+  pointer-events: none; 
+}
+
+
+.visibilityToggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.3em;
+  padding: 5px; 
+  display: flex;
+  align-items: center; 
+}
+
+.visibilityToggle:focus {
+    outline: none;
+}
+
+.between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.forgotPassword {
+  font-size: 0.9em;
+  color: #2A6041; /* verdeEscuro */
+  text-decoration: none;
+}
+
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+.signupText {
+  font-size: 0.9em;
+  color: #666;
+  text-align: center;
+  margin: 0; /* Remove default paragraph margin */
+}
+
+.signupLink {
+  color: #2a6041; /* verdeEscuro */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}
+
+.infoBoxes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* espaço entre info boxes */
+}
+
+.infoBox {
+  background-color: rgba(185, 231, 202, 0.1); /* Semi-transparent white ou colocamos um leve verde claro #F0FDF4 */
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  color: #333333; /* ou branco  */
+  font-size: 0.95em;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05); 
+}
+
+.infoIcon {
+  font-size: 1.5em;
+  margin-right: 12px;
+  color: #ffffff; /* verdeClaro */
+}

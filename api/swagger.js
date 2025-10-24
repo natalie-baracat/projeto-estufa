@@ -187,13 +187,23 @@ const swaggerDefinition = {
                 tags: ['Usuarios'],
                 summary: 'Editar usuário',
                 description: 'Método utilizado para editar usuários',
+                parameters: [
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: {
+                            type: 'integer'
+                        },
+                        description: 'ID do usuário a ser editado'
+                    }
+                ],
                 requestBody: {
                     required: true,
                     content: {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                // required: ['nome', 'email', 'senha', 'tipo_acesso'],
                                 properties: {
                                     email: { type: 'string', example: 'amity@example.com' }
                                 }
@@ -202,20 +212,21 @@ const swaggerDefinition = {
                     }
                 },
                 responses: {
-                    '200': {
+                    200: {
                         description: 'Usuário editado com sucesso'
                     },
-                    '400': {
+                    400: {
                         description: 'Erro ao editar usuário'
                     },
-                    '500': {
+                    500: {
                         description: 'Erro interno do servidor'
                     }
                 }
-            },
+            }
         },
 
-        '       /usuarios/{id}': {
+
+        '/usuarios/{id}': {
             delete: {
                 tags: ['Usuarios'],
                 summary: 'Desativar usuario',
@@ -341,6 +352,16 @@ const swaggerDefinition = {
                 tags: ['Relatorios'],
                 summary: 'Editar relatorio',
                 description: 'Editar de relatorio',
+                parameters: [
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: {
+                        type: 'integer'
+                        }
+                    }
+                ],
                 requestBody: {
                     required: true,
                     content: {
