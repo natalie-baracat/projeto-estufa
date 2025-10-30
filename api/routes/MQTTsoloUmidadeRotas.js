@@ -1,4 +1,4 @@
-import { onMessage, TOPICO_UMIDADE_SOLO } from "../services/mqttClient.js";
+import { onMessage, TOPICO_UMIDADE_SOLO } from "../services/temp.js";
 
 let soloUmidade = "";
 
