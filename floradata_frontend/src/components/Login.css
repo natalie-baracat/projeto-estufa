@@ -186,3 +186,9 @@ h1Login {
   margin-right: 12px;
   color: #ffffff; /* verdeClaro */
 }
+
+.tituoCadastro{
+  background-color: #7BAE44;
+  font-size: 28px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}

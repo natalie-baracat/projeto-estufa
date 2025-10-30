@@ -1,0 +1,389 @@
+/* ============================================
+   CADASTRO DE PLANTIOS - DESIGN MODERNO
+   Mobile First • Responsivo • Paleta Verde Natural
+   ============================================ */
+
+/* === Cores principais da paleta ===
+corPrincipal: #7BAE44
+corFundo: #fffafa
+corTitulo: #432716
+corConteudo: #333333
+verdeEscuro: #2A6041
+creme: #FFF8D8
+b4d7a3: Hover verde claro
+===================================== */
+
+/* ===== Container Principal ===== */
+.cadastro-container {
+  min-height: 100vh;
+  /* background: linear-gradient(160deg, #B9E7CA 0%, #7BAE44 45%, #2A6041 100%); */
+  background-color: #fffafa; /* neutro claro */
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* ===== Header com Imagem e Gradiente ===== */
+.cadastro-header {              
+  width: 100%;
+  text-align: center;
+  background-color: #7BAE44; /* ou branco, se preferir */
+  background-size: cover;
+  background-position: center;
+  /* color: white; */
+  color: #4a7a33; /* verde Dashboard */
+  padding: 60px 20px 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cadastro-header h1 {
+  font-family: "Inter", sans-serif; /* igual Dashboard */
+  font-weight: 800;                 /* font-extrabold */
+  font-size: 2.25rem;               
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cadastro-header p {
+  font-size: 1.1rem;
+  color: #fff8d8;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Conteúdo Principal ===== */
+.cadastro-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: -40px auto 0;
+  padding: 0 20px;
+  z-index: 10;
+  position: relative;
+}
+
+/* ===== Seções ===== */
+.form-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  color: #432716;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #7bae44;
+  text-align: center;
+}
+
+/* ===== Layout de Informações Gerais ===== */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.info-left,
+.info-right {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .info-grid {
+    flex-direction: row;
+    gap: 30px;
+  }
+  .info-left,
+  .info-right {
+    flex: 1;
+  }
+}
+
+/* ===== Inputs ===== */
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+}
+.input-group label {
+  display: block;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #333333;
+  font-size: 1rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+  border-color: #7bae44;
+  box-shadow: 0 0 0 3px rgba(123, 174, 68, 0.15);
+  outline: none;
+}
+.input-group textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: "Montserrat", sans-serif;
+}
+.inputIcon {
+  position: absolute;
+  left: 12px;
+  top: 38px;
+  color: #7bae44;
+  font-size: 1.2em;
+}
+
+/* ===== Input Rows ===== */
+.input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+@media (min-width: 768px) {
+  .input-row {
+    flex-direction: row;
+    gap: 20px;
+  }
+  .input-row .input-group {
+    flex: 1;
+  }
+}
+
+/* ===== Upload ===== */
+.upload-row {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+@media (min-width: 768px) {
+  .upload-row {
+    flex-direction: row;
+    gap: 20px;
+  }
+}
+.upload-group {
+  flex: 1;
+  text-align: center;
+}
+.upload-group label {
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 8px;
+}
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #fff8d8;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  color: #432716;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.upload-button:hover {
+  background-color: #f6edb0;
+  transform: translateY(-2px);
+}
+
+/* ===== Tipo de Cultivo ===== */
+.tipo-cultivo-group {
+  margin-top: 15px;
+}
+.tipo-label {
+  display: block;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 10px;
+}
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@media (min-width: 768px) {
+  .radio-group {
+    flex-direction: row;
+    gap: 20px;
+  }
+}
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.radio-option:hover {
+  background: #f0fdf4;
+  border-color: #7bae44;
+}
+
+/* ===== Parâmetros Ideais ===== */
+.parametros-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.parametro-group {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #e8e8e8;
+}
+.parametro-label {
+  font-weight: 600;
+  color: #432716;
+  margin-bottom: 10px;
+}
+.min-max-inputs {
+  display: flex;
+  gap: 15px;
+}
+.min-max-inputs .input-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+.small-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* ===== Sensores ===== */
+.sensores-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .sensores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .sensores-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.checkbox-option:hover {
+  background: #f0fdf4;
+  border-color: #7bae44;
+}
+
+/* ===== Botões ===== */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 768px) {
+  .action-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.btn-salvar {
+  background: #7bae44;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-salvar:hover {
+  background: #6fa23e;
+  transform: translateY(-2px);
+}
+
+.btn-limpar {
+  background: #fff8d8;
+  color: #432716;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-limpar:hover {
+  background: #f6edb0;
+  transform: translateY(-2px);
+}
+
+.btn-cancelar {
+  background: #d30f0f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-cancelar:hover {
+  background: #b50d0d;
+  transform: translateY(-2px);
+}

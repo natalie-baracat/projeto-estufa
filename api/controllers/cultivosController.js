@@ -3,7 +3,9 @@ import { BD } from "../db.js";
 class cultivosController {
     static async novo(req, res) {
 
-        const { nome, variedade, img_cultivo, descricao, data_criacao, data_colheita, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao } = req.body
+        const { nome, variedade, img_cultivo, descricao, data_criacao, data_colheita, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao,
+            umid_min, umid_max, temp_min, temp_max //adicionei isso, precisa criar no banco
+         } = req.body
 
         try {
             const query = `INSERT INTO cultivos(nome, variedade, img_cultivo, descricao, data_criacao, data_colheita, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao, umid_min, umid_max, temp_min, temp_max, irrigacao_frequencia, irrigacao_duracao) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`

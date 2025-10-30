@@ -107,7 +107,7 @@ function Login() {
           <button onClick={botaoLogin} type="submit" className="login-button">Entrar</button>
           <button onClick={botaoLimpar} type="button" className="clear-button"> Limpar</button>
           <p className="signupText">
-						Não tem uma conta? <a href="#" className="signupLink">Cadastre-se</a>
+						Não tem uma conta? <a href="/cadastro" className="signupLink">Cadastre-se</a>
 					</p>
         </div>
         <p>{mensagem}</p>

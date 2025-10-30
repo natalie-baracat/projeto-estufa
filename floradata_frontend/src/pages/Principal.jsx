@@ -11,7 +11,7 @@ import { IoAnalyticsOutline } from "react-icons/io5";
 import { PiPlantFill } from "react-icons/pi";
 
 import Dashboard from './Dashboard';
-import NovoPlantio from './NovoPlantio';
+import NovoPlantio from './NovoPlantio.jsx';
 import AlertasNotificacoes from './AlertasNotificacoes';
 import ConfiguracoesAutomacao from './ConfiguracoesAutomacao';
 import ControleInteligente from './ControleInteligente';
@@ -19,7 +19,8 @@ import DiagnosticoSistema from './DiagnosticoSistema';
 import MonitoriamentoPlantio from './MonitoriamentoPlantio';
 import Usuarios from './Usuarios';
 import logo from "../assets/logo.png";
-import Cadastro from './Cadastro';
+import Layout from '../components/Layout';
+
 
 
 export default function Principal() {
@@ -47,8 +48,8 @@ export default function Principal() {
     };
 
     return(
-       
-        <div className='flex h-screen font-sans' style={{backgroundColor: corFundo}}>
+       <Layout>
+        <div className='flex h-screen justify-center w-full max-w-full'>
             <div className={`fixed inset-0 bg-transparent bg-opacity-80 z-30 md:hidden 
             ${menuAberto == true ? 'block' : 'hidden'}`}
             onClick={() => setMenuAberto(false)}>
@@ -88,12 +89,12 @@ export default function Principal() {
 
 
                     {/* Dashboard */}
-                    <Link to='/dashboard' onClick={() => setMenuAberto(false)}
+                    <Link to='/' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors.
-                            duration-200 ${location.pathname == '/dashboard' ?
-                            'bg-[#628b4e] text-white text-sm shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            duration-200 ${location.pathname == '/' ?
+                            'bg-[#4f952cc4] text-white text-sm' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdGridView className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Dashboard</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Dashboard</span>
                     </Link>
            
 
@@ -101,9 +102,9 @@ export default function Principal() {
                     <Link to='/usuarios' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/usuarios' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdPeople className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Usuarios</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Usuários</span>
                     </Link> 
 
 
@@ -111,9 +112,9 @@ export default function Principal() {
                     <Link to='/novoplantio' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/novoplantio' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <PiPlantFill className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Novo Plantio</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Novo Plantio</span>
                     </Link>                    
 
 
@@ -121,9 +122,9 @@ export default function Principal() {
                     <Link to='/monitoriamentoplantio' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/monitoriamentoplantio' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdTimeline className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Monitoriamento do Plantio</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Monitoriamento do Plantio</span>
                     </Link>
 
 
@@ -131,9 +132,9 @@ export default function Principal() {
                     <Link to='/controleinteligente' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/controleinteligente' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <FaRobot className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Controle Inteligente</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Controle Inteligente</span>
                     </Link>
 
 
@@ -141,9 +142,9 @@ export default function Principal() {
                     <Link to='/alertasenotificacoes' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/alertasenotificacoes' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <IoIosWarning className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Alertas e Notificações</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Alertas e Notificações</span>
                     </Link>
 
 
@@ -151,9 +152,9 @@ export default function Principal() {
                     <Link to='/configuracoes' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/configuracoes' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdSettings className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Configurações e Automação</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Configurações e Automação</span>
                     </Link>
 
 
@@ -161,23 +162,23 @@ export default function Principal() {
                     <Link to='/diagnosticosistema' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors
                             duration-200 ${location.pathname == '/diagnosticosistema' ?
-                            'bg-[#628b4e] text-white shadow-md' : 'hover:bg-[#b4d7a3]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <IoAnalyticsOutline className='w-6 h-6 text-white' />
-                        <span className='font-medium md:hidden lg:block text-white h1Login'>Diagnóstico do Sistema</span>
+                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Diagnóstico do Sistema</span>
                     </Link>
                 </div>
             </nav>
             </section>
 
             {/* Conteúdo Principal */}
-            <section className='flex-1 p-4 text-gray-100 overflow-auto'>
+            <section className="flex-1 min-h-screen p-4 w-full text-gray-100 overflow-auto">
                 <header className='flex items-center mb-3'>
                     <button className='md:hidden' onClick={() => setMenuAberto(true)}>
                         <MdMenu className='w-8 h-8 text-white'/>
                     </button>
                     <div className='flex items-center justify-center flex-1 gap-2 md:hidden'>
                         <img src={logo} alt="Logo Floradata" className='w-8 h-8' />
-                        <span className='font-bold text-xl h1Login'>Floradata</span>
+                        <span className='font-bold text-xl h1Login text-[#628b4e]'>Floradata</span>
                     </div>
                 </header>
 
@@ -185,16 +186,17 @@ export default function Principal() {
                     <Routes>
                         <Route path='/' element={<Dashboard />} />
                         <Route path='/usuarios' element={<Usuarios />} />
-                        <Route path='/cadastro' element={<Cadastro />} />
                         <Route path='/novoplantio' element={<NovoPlantio />} />
                         <Route path='/monitoriamentoplantio' element={<MonitoriamentoPlantio />} />
                         <Route path='/controleinteligente' element={<ControleInteligente />} />
                         <Route path='/alertasenotificacoes' element={<AlertasNotificacoes />} />
                         <Route path='/configuracoes' element={<ConfiguracoesAutomacao />} />
                         <Route path='/diagnosticosistema' element={<DiagnosticoSistema />} />
+
                     </Routes>
                 </main>
             </section>
         </div>
+        </Layout>
     )
 }

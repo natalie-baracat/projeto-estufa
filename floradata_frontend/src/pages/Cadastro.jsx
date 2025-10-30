@@ -1,7 +1,7 @@
 // import { enderecoServidor } from '../utils/utils.js'
 // import { useNavigate } from 'react-router-dom'
 // import { Navigate } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import Estilos from '../styles/Estilos';
 // import { dadosUsuario } from '../utils/utils.jsx';
 
@@ -25,7 +25,7 @@ export default function CadastroUsuario () {
     }
 
     const novoUsuario = {
-      nome, sobrenome, email, cargo, telefone, senha,
+      nome, sobrenome, email, cargo, telefone, senha, 
     };
 
     console.log("Usuário cadastrado:", novoUsuario);
