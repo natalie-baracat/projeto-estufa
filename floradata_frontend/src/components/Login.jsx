@@ -38,7 +38,7 @@ function Login() {
       if (resposta.ok) {
         localStorage.setItem('UsuarioLogado', JSON.stringify({ ...dados, lembrar }));
 				setDadosUsuario(dados); //Gravando os dados do usuário no contexto
-				navigate("/principal")
+				navigate("/")
       } else {
         setMensagem('Email ou senha incorretos ❌');
         throw new Error('Email ou senha incorretos ❌');
@@ -70,7 +70,7 @@ function Login() {
                 const usuario = JSON.parse(usuarioLogado);
                 if (usuario.lembrar == true){
 					setDadosUsuario(dados);
-                    navigate('/principal')
+                    navigate('/')
                 }
             }    
         }

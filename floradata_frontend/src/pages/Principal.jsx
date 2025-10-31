@@ -4,7 +4,7 @@ import { useNavigate, Link, Routes, Route, useLocation} from 'react-router-dom';
 import '../components/Login.css';
 import Estilos, {corFundo, corBarraLateral} from "../styles/Estilos";
 
-import { MdClose, MdGridView, MdMenu, MdTimeline, MdSettings, MdPeople  } from 'react-icons/md';
+import { MdClose, MdGridView, MdMenu, MdTimeline, MdSettings, MdPeople, MdLogout  } from 'react-icons/md';
 import { FaRobot } from "react-icons/fa";
 import { IoIosWarning } from "react-icons/io";
 import { IoAnalyticsOutline } from "react-icons/io5";
@@ -74,16 +74,19 @@ export default function Principal() {
 
 
                     {/* Perfil */}
-                    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#b4d7a3] cursor-pointer">
-                        {/* A foto vem encima */}
+                    <div className="flex flex-row items-center gap-2 p-3 rounded-lg hover:bg-[#b4d7a3] cursor-pointer">
+                        {/* A foto vem em cima */}
                         <div>
-                        <img src="" alt="Foto do usuário" className="w-10 h-10 rounded-full object-cover"/>
+                        <img src={dadosUsuario?.img_perfil} alt="Foto do usuário" className="w-full mr-9 h-12  rounded-full object-cover"/>
                         </div>
                         <div>
-                            <p className="font-semibold text-white"></p>
-                            <p className="text-sm text-[#d0d0d0]"></p>
-                            <Link to="/perfil" className="text-xs text-[#b4d7a3] hover:underline">Ver Perfil</Link>
+                            <span className="font-semibold text-white"></span>
+                            <span className="text-sm !text-white">{dadosUsuario?.nome} {dadosUsuario?.sobrenome} </span>
+                            <Link to="/perfil" className="text-xs text-[#b4d7a3] hover:underline">Gerenciar perfil</Link>
                         </div>
+                            <button onClick={botaoLogout}>
+                                <MdLogout className='text-black w-8 h-8' />
+                            </button>
                     </div>
 
                     {/* preciso diminuir esses botões estão muito grandes, além dissos eles ficam mais proximos do final da tela, ´lá em baixo o ultimo começa e vai subindo, não comeca logo de */}

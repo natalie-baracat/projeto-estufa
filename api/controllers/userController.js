@@ -7,15 +7,15 @@ const SECRET_KEY = "chavesupersecreta"
 
 class userController {
     static async novo(req, res) {
-        const { nome, sobrenome, usuario, telefone, email, senha, id_cargo } = req.body
+        const { nome, sobrenome, usuario, telefone, email, senha, id_cargo, img_perfil } = req.body
 
         const saltRounds = 10
         const senhaCriptografada = await bcrypt.hash(senha, saltRounds)
         try {
 
             // outro jeito: 
-            const query = `INSERT INTO usuarios(nome, sobrenome, usuario, email, telefone, senha, id_cargo) VALUES($1, $2, $3, $4, $5, $6, $7)`
-            const valores = [nome, sobrenome, usuario, email, telefone, senhaCriptografada, id_cargo]
+            const query = `INSERT INTO usuarios(nome, sobrenome, usuario, email, telefone, senha, id_cargo, img_perfil) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`
+            const valores = [nome, sobrenome, usuario, email, telefone, senhaCriptografada, id_cargo, img_perfil]
             const resposta = await BD.query(query, valores)
 
             res.status(201).json("Usuário cadastrado com sucesso")
@@ -51,7 +51,7 @@ class userController {
             const senhaValida = await bcrypt.compare(senha, usuario.senha)
 
             if (!senhaValida) {
-                return res.status(401).json({message: "Senha incorreta"})
+                return res.status(401).json({message: "Email ou senha incorreta"})
             }
 
             // geracao de um novo token (JWT) para o usuario
@@ -61,7 +61,8 @@ class userController {
                     id: usuario.id_usuario, 
                     nome: usuario.nome, 
                     sobrenome: usuario.sobrenome, 
-                    email: usuario.email
+                    email: usuario.email,
+                    img_perfil: usuario.img_perfil
                 },
                 // chave
                 SECRET_KEY
@@ -78,6 +79,7 @@ class userController {
                     nome: usuario.nome, 
                     sobrenome: usuario.sobrenome, 
                     email: usuario.email,
+                    img_perfil: usuario.img_perfil
                 }
             )
 
