@@ -20,7 +20,7 @@ import MonitoriamentoPlantio from './MonitoriamentoPlantio';
 import Usuarios from './Usuarios';
 import logo from "../assets/logo.png";
 import Layout from '../components/Layout';
-
+import logobranca from "../assets/Floradata-Branco-semfundo.png"
 
 
 export default function Principal() {
@@ -49,20 +49,21 @@ export default function Principal() {
 
     return(
        <Layout>
-        <div className='flex h-screen justify-center w-full max-w-full'>
+        <div className='flex max-h-screen justify-center w-full max-w-full'>
             <div className={`fixed inset-0 bg-transparent bg-opacity-80 z-30 md:hidden 
             ${menuAberto == true ? 'block' : 'hidden'}`}
             onClick={() => setMenuAberto(false)}>
             </div>
 
             {/* Barra lateral / Sidebar */}
-            <section className={`fixed top-0 left-0 h-full w-64 flex flex-col justify-between z-40 transform transition-transform md:relative md:w-20 lg:w-64 md:translate-x-0
+            <section className={`fixed top-0 left-0 h-full w-64 flex flex-col justify-between z-40 transform transition-transform md:relative md:w-20 lg:w-64 md:translate-x-0 max-h-full
             ${menuAberto == true? 'translate-x-0' : '-translate-x-full'} 
             `} style={{backgroundColor: corBarraLateral, color: corFundo}}>
-            <div className='flex justify-between items-center mb-6 p-4 '>
-                <div className='flex gap-2 items-center'>
+            <div className='flex justify-between items-center mb-3 p-4 '>
+                <div className='flex flex-1 justify-center items-center'>
                     {/* <img src={logo} alt='logo Floradata' className='w-8 h-8' /> não sei se vamos colocar a logo aqui ou não */}
-                    <span className='text-xl font-bold md:hidden lg:block h1Login'>FloraData</span>
+                    {/* <span className='text-xl font-bold md:hidden lg:block h1Login'>FloraData</span> */}
+                    <img src={logobranca} alt="logo" className='w-1/3 h-[100%]'/>
                 </div>
                 <button className='md:hidden hover:text-[#b4d7a3] transition-colors' onClick={() => setMenuAberto(false)}>
                     <MdClose className='w-6 h-6' />
@@ -94,7 +95,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/' ?
                             'bg-[#4f952cc4] text-white text-sm' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdGridView className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Dashboard</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Dashboard</span>
                     </Link>
            
 
@@ -104,7 +105,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/usuarios' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdPeople className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Usuários</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Usuários</span>
                     </Link> 
 
 
@@ -114,7 +115,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/novoplantio' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <PiPlantFill className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Novo Plantio</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Novo Plantio</span>
                     </Link>                    
 
 
@@ -124,7 +125,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/monitoriamentoplantio' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdTimeline className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Monitoriamento do Plantio</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Monitoriamento do Plantio</span>
                     </Link>
 
 
@@ -134,7 +135,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/controleinteligente' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <FaRobot className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Controle Inteligente</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Controle Inteligente</span>
                     </Link>
 
 
@@ -144,7 +145,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/alertasenotificacoes' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <IoIosWarning className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Alertas e Notificações</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Alertas e Notificações</span>
                     </Link>
 
 
@@ -154,7 +155,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/configuracoes' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdSettings className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Configurações e Automação</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Configurações e Automação</span>
                     </Link>
 
 
@@ -164,7 +165,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/diagnosticosistema' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <IoAnalyticsOutline className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 text-xl md:hidden lg:block text-white h1Login'>Diagnóstico do Sistema</span>
+                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Diagnóstico do Sistema</span>
                     </Link>
                 </div>
             </nav>
@@ -178,7 +179,7 @@ export default function Principal() {
                     </button>
                     <div className='flex items-center justify-center flex-1 gap-2 md:hidden'>
                         <img src={logo} alt="Logo Floradata" className='w-8 h-8' />
-                        <span className='font-bold text-xl h1Login text-[#628b4e]'>Floradata</span>
+                        {/* <span className='font-bold text-xl h1Login text-[#628b4e]'>Floradata</span> */}
                     </div>
                 </header>
 

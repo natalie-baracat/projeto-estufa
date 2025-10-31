@@ -1,78 +1,142 @@
-.container {
+.cadastro-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
-  font-family: Arial, sans-serif;
+  background-color: #dcdcdc;
+  padding: 40px;
+  box-sizing: border-box;
 }
 
-.imageContainer {
-  flex: 1;
-}
 
-.image {
+.cadastro-content {
+  display: flex;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 1100px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
 
-.form {
+
+.cadastro-image-container {
   flex: 1;
-  background-color: #7fbf3f;
+  background: url("https://i.pinimg.com/736x/37/ba/ca/37bacad8e3ed86a64b74c2de3c207355.jpg")
+    center/cover no-repeat;
+  min-height: 600px;
+}
+
+
+.cadastro-form {
+  flex: 1;
+  background: rgba(127, 191, 63, 0.85);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px;
-  color: #fff;
 }
 
-.title {
+.cadastro-logo {
+  width: 100px;
+  margin: 0 auto 10px;
+}
+
+.cadastro-title {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  font-weight: bold;
 }
 
-.label {
-  margin-bottom: 5px;
-  margin-top: 15px;
+
+.cadastro-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
-.input {
-  padding: 10px;
-  border-radius: 10px;
+.cadastro-half {
+  flex: 1;
+}
+
+.cadastro-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 10px 15px;
+  gap: 10px;
+}
+
+.cadastro-input-wrapper input {
   border: none;
+  outline: none;
+  background: transparent;
   width: 100%;
-  font-size: 16px;
-  margin-bottom: 5px;
+  color: #333;
+  font-size: 1rem;
 }
 
-.row {
+.cadastro-icon {
+  color: #3a9d23;
+  font-size: 1.3rem;
+}
+
+.cadastro-button-row {
   display: flex;
-  gap: 20px;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 25px;
 }
 
-.half {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.buttonRow {
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.button {
-  flex: 1;
-  margin: 0 10px;
-  padding: 12px;
+.cadastro-button {
+  background: #3a9d23;
   border: none;
+  color: white;
+  padding: 10px 35px;
   border-radius: 10px;
-  background-color: #3e8635;
-  color: #fff;
-  font-size: 16px;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
-.button:hover {
-  background-color: #336f2a;
+.cadastro-button:hover {
+  background: #2e7c1a;
+}
+
+.cadastro-button.acesso {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.cadastro-button.acesso:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+.cadastro-error {
+  color: #ffdddd;
+  background-color: rgba(255, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .cadastro-content {
+    flex-direction: column;
+  }
+
+  .cadastro-image-container {
+    height: 250px;
+  }
+
+  .cadastro-form {
+    padding: 30px;
+  }
 }

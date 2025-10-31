@@ -5,6 +5,7 @@ import { UsuarioProvider } from './UsuarioContext';
 import Cadastro from './components/Cadastro.jsx';
 import NovoPlantio from './pages/NovoPlantio.jsx';
 import EditarPlantio from './pages/EditarPlantio.jsx'
+// import TesteDiag from './pages/TesteDiagnostico.jsx';
 // import "./components/Index.css"
 
 export default function App() {
@@ -16,6 +17,8 @@ export default function App() {
                      <Route path='/cadastro' element={<Cadastro />} />
                      <Route path='/*' element={<Principal />} />
                      <Route path='/novoplantio' element={<NovoPlantio />} />
+                     <Route path="/editar-plantio" element={<EditarPlantio />} />
+                     {/* <Route path="/testediag" element={<TesteDiag />} /> */}
                  </Routes>
              </Router>
         </UsuarioProvider>

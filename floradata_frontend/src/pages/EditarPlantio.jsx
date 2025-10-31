@@ -1,200 +1,199 @@
 import React, { useState } from "react";
-import { MdArrowDropDown, MdUpload } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { MdArrowBack, MdFileUpload } from "react-icons/md";
 
 export default function EditarPlantio() {
-  const [form, setForm] = useState({
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
     nome: "Morango",
     dataPlantio: "2025-06-12",
     dataColheita: "2025-11-08",
     variedade: "Morango Sabrina",
-    area: "1,2 x 1,2 m",
     substrato: "",
     tipoSolo: "",
     adubacao: "NPK 10-10-10 + Esterco curtido",
-    irrigacao: "",
     descricao: "",
     estagio: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Atualizado:", formData);
     alert("Plantio atualizado com sucesso!");
-    console.log("Dados do plantio:", form);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-[320px] bg-white rounded-3xl shadow-lg overflow-hidden">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4">
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
         {/* Cabeçalho */}
-        <div className="relative">
-          <img
-            src="https://cdn.pixabay.com/photo/2016/03/05/19/02/strawberries-1238242_1280.jpg"
-            alt="Morango"
-            className="w-full h-32 object-cover"
-          />
-          <h1 className="absolute bottom-2 left-4 text-2xl font-bold text-white drop-shadow-lg">
-            Editar Plantio
-          </h1>
+        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-600 hover:text-green-600 transition"
+          >
+            <MdArrowBack className="text-2xl mr-1" />
+            Voltar
+          </button>
+          <h1 className="text-3xl font-bold text-gray-800">Editar Plantio</h1>
+          <div className="w-16" /> {/* espaçamento simétrico */}
         </div>
 
         {/* Formulário */}
-        <form onSubmit={handleSubmit} className="p-4 space-y-3 text-sm text-gray-800">
-          <div>
-            <label className="font-semibold block mb-1">Nome do Plantio</label>
-            <input
-              type="text"
-              name="nome"
-              value={form.nome}
-              onChange={handleChange}
-              className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="font-semibold block mb-1">Data do Plantio</label>
-              <input
-                type="date"
-                name="dataPlantio"
-                value={form.dataPlantio}
-                onChange={handleChange}
-                className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-            <div>
-              <label className="font-semibold block mb-1">Data da Colheita</label>
-              <input
-                type="date"
-                name="dataColheita"
-                value={form.dataColheita}
-                onChange={handleChange}
-                className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="font-semibold block mb-1">Variedade</label>
-            <input
-              type="text"
-              name="variedade"
-              value={form.variedade}
-              onChange={handleChange}
-              className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block mb-1">Área de Plantio (acho melhor não ter)</label>
-            <input
-              type="text"
-              name="area"
-              value={form.area}
-              onChange={handleChange}
-              className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="font-semibold block mb-1">Substrato</label>
+              <label className="block font-medium mb-1 text-gray-700">
+                Nome do Plantio
+              </label>
               <input
                 type="text"
-                name="substrato"
-                value={form.substrato}
+                name="nome"
+                value={formData.nome}
                 onChange={handleChange}
-                className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
               />
             </div>
-            <div>
-              <label className="font-semibold block mb-1">Tipo de solo</label>
-              <input
-                type="text"
-                name="tipoSolo"
-                value={form.tipoSolo}
-                onChange={handleChange}
-                className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="font-semibold block mb-1">Adubação Utilizada</label>
-            <input
-              type="text"
-              name="adubacao"
-              value={form.adubacao}
-              onChange={handleChange}
-              className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block mb-1">Sistema de Irrigação (não vai ter)</label>
-            <input
-              type="text"
-              name="irrigacao"
-              value={form.irrigacao}
-              onChange={handleChange}
-              className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block mb-1">Descrição</label>
-            <textarea
-              name="descricao"
-              value={form.descricao}
-              onChange={handleChange}
-              rows="3"
-              className="w-full border rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-green-400 resize-none"
-            ></textarea>
-          </div>
-
-          {/* Upload e estágio */}
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="font-semibold block mb-1">Imagem do plantio</label>
-              <button
-                type="button"
-                className="w-full border border-gray-300 rounded-xl py-2 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50"
-              >
-                <MdUpload size={18} /> Importar
-              </button>
-            </div>
-
-            <div>
-              <label className="font-semibold block mb-1">Estágio atual</label>
-              <div className="relative">
-                <select
-                  name="estagio"
-                  value={form.estagio}
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block font-medium mb-1 text-gray-700">
+                  Data do Plantio
+                </label>
+                <input
+                  type="date"
+                  name="dataPlantio"
+                  value={formData.dataPlantio}
                   onChange={handleChange}
-                  className="w-full border rounded-xl px-3 py-2 appearance-none outline-none focus:ring-2 focus:ring-green-400"
-                >
-                  <option value="">Selecione</option>
-                  <option value="germinacao">Germinação</option>
-                  <option value="crescimento">Crescimento</option>
-                  <option value="floracao">Floração</option>
-                  <option value="colheita">Colheita</option>
-                </select>
-                <MdArrowDropDown className="absolute right-2 top-2.5 text-gray-600 text-xl pointer-events-none" />
+                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+              <div>
+                <label className="block font-medium mb-1 text-gray-700">
+                  Data da Colheita
+                </label>
+                <input
+                  type="date"
+                  name="dataColheita"
+                  value={formData.dataColheita}
+                  onChange={handleChange}
+                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+                />
               </div>
             </div>
           </div>
 
+          <div>
+            <label className="block font-medium mb-1 text-gray-700">
+              Variedade
+            </label>
+            <input
+              type="text"
+              name="variedade"
+              value={formData.variedade}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block font-medium mb-1 text-gray-700">
+                Substrato
+              </label>
+              <input
+                type="text"
+                name="substrato"
+                value={formData.substrato}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-1 text-gray-700">
+                Tipo de solo
+              </label>
+              <input
+                type="text"
+                name="tipoSolo"
+                value={formData.tipoSolo}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-medium mb-1 text-gray-700">
+              Adubação Utilizada
+            </label>
+            <input
+              type="text"
+              name="adubacao"
+              value={formData.adubacao}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+
+          <div>
+            <label className="block font-medium mb-1 text-gray-700">
+              Descrição
+            </label>
+            <textarea
+              name="descricao"
+              value={formData.descricao}
+              onChange={handleChange}
+              rows="3"
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+            ></textarea>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block font-medium mb-1 text-gray-700">
+                Imagem do plantio
+              </label>
+              <button
+                type="button"
+                className="flex items-center justify-center w-full border rounded-lg p-2 hover:bg-gray-50"
+              >
+                <MdFileUpload className="text-xl mr-1" />
+                Importar
+              </button>
+            </div>
+            <div>
+              <label className="block font-medium mb-1 text-gray-700">
+                Estágio atual
+              </label>
+              <select
+                name="estagio"
+                value={formData.estagio}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">Selecione</option>
+                <option value="Germinação">Germinação</option>
+                <option value="Crescimento">Crescimento</option>
+                <option value="Floração">Floração</option>
+                <option value="Frutificação">Frutificação</option>
+              </select>
+            </div>
+          </div>
+
           {/* Botão */}
-          <button
-            type="submit"
-            className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
-          >
-            Atualizar
-          </button>
+          <div className="flex justify-center pt-4">
+            <button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-8 rounded-xl transition"
+            >
+              Atualizar
+            </button>
+          </div>
         </form>
       </div>
     </div>
