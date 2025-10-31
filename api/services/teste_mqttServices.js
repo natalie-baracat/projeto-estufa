@@ -2,7 +2,7 @@ import mqtt from "mqtt";
 
 //Configurações do broker
 const MQTT_BROKER_HOST = "695ed70b392f4191993cb40e09bc1ecd.s1.eu.hivemq.cloud";
-const MQTT_BROKER_PORT = 8883;
+const MQTT_BROKER_PORT = 8884;
 const MQTT_USERNAME = "natalie";
 const MQTT_PASSWORD = "Mercipourlevenin7";
 
