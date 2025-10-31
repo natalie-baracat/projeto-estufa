@@ -1,0 +1,11 @@
+/* poppins regular */
+@font-face {
+    font-family: "Poppins";
+    src: url("/floradata_frontend/src/fonts/Poppins-Regular.ttf") format("truetype");
+    font-weight: 500; /* Bold weight is typically 700 */
+    font-style: normal;
+}
+
+body {
+   font-family: "Poppins"; 
+}
