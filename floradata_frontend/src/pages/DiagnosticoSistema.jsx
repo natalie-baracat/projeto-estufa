@@ -1,35 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Thermometer, Droplets, AlertTriangle, Sprout } from 'lucide-react';
-import { 
-  onMessage, 
-  // TOPICO_TEMPERATURA, 
-  // TOPICO_UMIDADE,
-  TOPICO_UMIDADE_SOLO,
-  TOPICO_CONDICAO_SOLO,
-  TOPICO_COMANDO_BOMBA_AGUA,
-  publicar
-} from '../../../api/services/teste_mqttServices.js';
+import { RefreshCw, Droplets, AlertTriangle, Sprout } from 'lucide-react';
+
+import { enderecoServidor } from '../utils/utils.jsx';
 
 export default function TesteDiag() {
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState('--/--/---- --:--');
-  
-  const [metricas, setMetricas] = useState({
-    temperatura: '--',
-    umidade: '--',
-    umidadeSolo: '--',
-    condicaoSolo: '--'
-  });
+
+  const [umidadeSolo, setUmidadeSolo] = useState("--")
+  const [condicaoSolo, setCondicaoSolo] = useState("--")
 
   const [componentes, setComponentes] = useState([
-    { nome: 'Sensor Temperatura/Umidade', status: 'inativo', hora: '--' },
+    // { nome: 'Sensor Temperatura/Umidade', status: 'inativo', hora: '--' },
     { nome: 'Sistema de Irrigação', status: 'inativo', hora: '--' },
     { nome: 'Sensor Umidade do Solo', status: 'inativo', hora: '--' }
   ]);
 
   const [alertas, setAlertas] = useState([]);
 
+  const buscarStatus = async () => {
+    try {
+      const resposta = await fetch(`${enderecoServidor}/mqtt`);
+      const dados = await resposta.json();
+      setUmidadeSolo(dados.umidadeSolo);
+      setCondicaoSolo(dados.condicaoSolo);
+      atualizarHora()
+    } catch (error) {
+      console.error("erro ao buscar status", error);
+    }
+  };
+
   useEffect(() => {
-    // Temperatura
+    setInterval(() => {
+      // Seu código aqui
+      buscarStatus();
+    }, 2000);
+    
+
+    /* Temperatura
     // onMessage(TOPICO_TEMPERATURA, (mensagem) => {
     //   const temp = parseFloat(mensagem);
     //   setMetricas(anterior => ({ ...anterior, temperatura: temp.toFixed(1) }));
@@ -46,21 +53,26 @@ export default function TesteDiag() {
     //   verificarUmidade(umidade);
     //   atualizarHora();
     // });
+    */
 
     // Umidade do Solo
-    onMessage(TOPICO_UMIDADE_SOLO, (mensagem) => {
-      const umidadeSolo = parseFloat(mensagem);
-      setMetricas(anterior => ({ ...anterior, umidadeSolo: umidadeSolo.toFixed(1) }));
-      atualizarComponente('Sensor Umidade do Solo', 'ativo');
-      verificarUmidadeSolo(umidadeSolo);
-      atualizarHora();
-    });
+    // onMessage(TOPICO_UMIDADE_SOLO, (mensagem) => {
+    //   const umidadeSolo = parseFloat(mensagem);
+    //   // setMetricas(anterior => ({ ...anterior, umidadeSolo: umidadeSolo.toFixed(1) }));
+    //   setUmidadeSolo(umidadeSolo)
+    //   console.log(umidadeSolo);
+      
+    //   atualizarComponente('Sensor Umidade do Solo', 'ativo');
+    //   verificarUmidadeSolo(umidadeSolo);
+    //   atualizarHora();
+    // });
 
     // Condição do Solo
-    onMessage(TOPICO_CONDICAO_SOLO, (mensagem) => {
-      setMetricas(anterior => ({ ...anterior, condicaoSolo: mensagem }));
-      atualizarHora();
-    });
+    // onMessage(TOPICO_CONDICAO_SOLO, (mensagem) => {
+    //   // setMetricas(anterior => ({ ...anterior, condicaoSolo: mensagem }));
+    //   setCondicaoSolo(mensagem)
+    //   atualizarHora();
+    // });
 
     // // Status da Boia
     // onMessage(STATUS_BOIA, (mensagem) => {
@@ -74,11 +86,11 @@ export default function TesteDiag() {
     // });
 
     // Bomba d'Água
-    onMessage(TOPICO_COMANDO_BOMBA_AGUA, (mensagem) => {
-      const bombaLigada = mensagem.toLowerCase() === 'on' || mensagem === '1';
-      atualizarComponente('Sistema de Irrigação', bombaLigada ? 'ativo' : 'inativo');
-      atualizarHora();
-    });
+    // onMessage(TOPICO_COMANDO_BOMBA_AGUA, (mensagem) => {
+    //   const bombaLigada = mensagem.toLowerCase() === 'on' || mensagem === '1';
+    //   atualizarComponente('Sistema de Irrigação', bombaLigada ? 'ativo' : 'inativo');
+    //   atualizarHora();
+    // });
   }, []);
 
   const atualizarHora = () => {
@@ -90,9 +102,9 @@ export default function TesteDiag() {
   const atualizarComponente = (nomeComponente, novoStatus) => {
     const agora = new Date();
     const horaFormatada = `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`;
-    
-    setComponentes(anterior => anterior.map(comp => 
-      comp.nome === nomeComponente 
+
+    setComponentes(anterior => anterior.map(comp =>
+      comp.nome === nomeComponente
         ? { ...comp, status: novoStatus, hora: horaFormatada }
         : comp
     ));
@@ -132,10 +144,10 @@ export default function TesteDiag() {
     setAlertas(anterior => {
       const palavraChave = mensagem.split(':')[0];
       const existe = anterior.some(alerta => alerta.mensagem.includes(palavraChave));
-      
+
       if (existe) {
-        return anterior.map(alerta => 
-          alerta.mensagem.includes(palavraChave) 
+        return anterior.map(alerta =>
+          alerta.mensagem.includes(palavraChave)
             ? { tipo, mensagem }
             : alerta
         );
@@ -149,7 +161,7 @@ export default function TesteDiag() {
   };
 
   const atualizar = () => {
-    publicar(TOPICO_STATUS, 'request_update');
+    // publicar(TOPICO_STATUS, 'request_update');
     atualizarHora();
   };
 
@@ -170,7 +182,7 @@ export default function TesteDiag() {
   const statusGeral = () => {
     const temErro = alertas.some(a => a.tipo === 'erro');
     const temAviso = alertas.some(a => a.tipo === 'aviso');
-    
+
     if (temErro) return { texto: 'ALERTA', cor: 'text-red-600', fundo: 'bg-red-50' };
     if (temAviso) return { texto: 'ATENÇÃO', cor: 'text-yellow-600', fundo: 'bg-yellow-50' };
     return { texto: 'NORMAL', cor: 'text-green-600', fundo: 'bg-green-50' };
@@ -188,7 +200,7 @@ export default function TesteDiag() {
           <div className="text-sm text-gray-500 mb-4">
             Última Verificação: {ultimaAtualizacao}
           </div>
-          <button 
+          <button
             onClick={atualizar}
             className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
           >
@@ -201,13 +213,13 @@ export default function TesteDiag() {
           {/* Status Geral */}
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4">STATUS GERAL</h2>
-            
+
             <div className="space-y-4">
               <div className={`flex items-center gap-3 p-4 rounded-xl ${situacao.fundo}`}>
                 <div className={`${corStatus(alertas.length > 0 ? 'aviso' : 'ativo')} rounded-full p-2`}>
                   {alertas.length === 0 ? (
                     <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   ) : (
                     <AlertTriangle className="w-6 h-6 text-white" />
@@ -222,93 +234,91 @@ export default function TesteDiag() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-xl">
+               {/* <div className="text-center p-4 bg-blue-50 rounded-xl">
                   <Thermometer className="w-6 h-6 mx-auto mb-2 text-blue-600" />
                   <div className="text-xs text-gray-600 mb-1">Temperatura</div>
                   <div className="text-xl font-bold text-gray-800">
-                    {metricas.temperatura !== '--' ? `${metricas.temperatura}°C` : '--'}
+                    {temperatura !== '--' ? `${temperatura}°C` : '--'}
                   </div>
-                </div>
+                </div> */}
 
-                <div className="text-center p-4 bg-cyan-50 rounded-xl">
+              {/* <div className="text-center p-4 bg-cyan-50 rounded-xl">
                   <Droplets className="w-6 h-6 mx-auto mb-2 text-cyan-600" />
                   <div className="text-xs text-gray-600 mb-1">Umidade Ar</div>
                   <div className="text-xl font-bold text-gray-800">
-                    {metricas.umidade !== '--' ? `${metricas.umidade}%` : '--'}
+                    {umidade !== '--' ? `${umidade}%` : '--'}
                   </div>
-                </div>
+                </div> */}
 
-                <div className="text-center p-4 bg-amber-50 rounded-xl">
-                  <Sprout className="w-6 h-6 mx-auto mb-2 text-amber-600" />
-                  <div className="text-xs text-gray-600 mb-1">Umidade Solo</div>
-                  <div className="text-xl font-bold text-gray-800">
-                    {metricas.umidadeSolo !== '--' ? `${metricas.umidadeSolo}%` : '--'}
-                  </div>
+              <div className="text-center p-4 bg-amber-50 rounded-xl">
+                <Sprout className="w-6 h-6 mx-auto mb-2 text-amber-600" />
+                <div className="text-xs text-gray-600 mb-1">Umidade Solo</div>
+                <div className="text-xl font-bold text-gray-800">
+                  {umidadeSolo !== '--' ? `${umidadeSolo}%` : '--'}
                 </div>
+              </div>
 
-                <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <Droplets className="w-6 h-6 mx-auto mb-2 text-green-600" />
-                  <div className="text-xs text-gray-600 mb-1">Condição Solo</div>
-                  <div className="text-sm font-bold text-gray-800">
-                    {metricas.condicaoSolo !== '--' ? metricas.condicaoSolo : '--'}
-                  </div>
+              <div className="text-center p-4 bg-green-50 rounded-xl">
+                <Droplets className="w-6 h-6 mx-auto mb-2 text-green-600" />
+                <div className="text-xs text-gray-600 mb-1">Condição Solo</div>
+                <div className="text-sm font-bold text-gray-800">
+                  {condicaoSolo !== '--' ? condicaoSolo : '--'}
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Componentes */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">COMPONENTES</h2>
-            
-            <div className="space-y-3">
-              {componentes.map((componente, indice) => (
-                <div key={indice} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className={`w-3 h-3 rounded-full ${corStatus(componente.status)}`}></div>
-                    <div className="font-medium text-gray-700">{componente.nome}</div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-semibold text-gray-600">{textoStatus(componente.status)}</span>
-                    <span className="text-xs text-gray-400 hidden md:block">{componente.hora}</span>
-                  </div>
+        {/* Componentes */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+          <h2 className="text-xl font-bold text-gray-800 mb-6">COMPONENTES</h2>
+
+          <div className="space-y-3">
+            {componentes.map((componente, indice) => (
+              <div key={indice} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center gap-3 flex-1">
+                  <div className={`w-3 h-3 rounded-full ${corStatus(componente.status)}`}></div>
+                  <div className="font-medium text-gray-700">{componente.nome}</div>
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-semibold text-gray-600">{textoStatus(componente.status)}</span>
+                  <span className="text-xs text-gray-400 hidden md:block">{componente.hora}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Alertas */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mt-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-6">ALERTAS</h2>
-          
-          {alertas.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <p className="text-lg font-medium">Nenhum alerta ativo</p>
-              <p className="text-sm">Sistema funcionando normalmente</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {alertas.map((alerta, indice) => (
-                <div 
-                  key={indice} 
-                  className={`flex items-start gap-3 p-4 rounded-xl ${
-                    alerta.tipo === 'erro' ? 'bg-red-50' : 'bg-yellow-50'
-                  }`}
-                >
-                  <AlertTriangle className={`w-6 h-6 flex-shrink-0 ${
-                    alerta.tipo === 'erro' ? 'text-red-500' : 'text-yellow-500'
-                  }`} />
-                  <p className="text-gray-700 font-medium">{alerta.mensagem}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
+
+      {/* Alertas */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mt-6">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">ALERTAS</h2>
+
+        {alertas.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-lg font-medium">Nenhum alerta ativo</p>
+            <p className="text-sm">Sistema funcionando normalmente</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {alertas.map((alerta, indice) => (
+              <div
+                key={indice}
+                className={`flex items-start gap-3 p-4 rounded-xl ${alerta.tipo === 'erro' ? 'bg-red-50' : 'bg-yellow-50'
+                  }`}
+              >
+                <AlertTriangle className={`w-6 h-6 flex-shrink-0 ${alerta.tipo === 'erro' ? 'text-red-500' : 'text-yellow-500'
+                  }`} />
+                <p className="text-gray-700 font-medium">{alerta.mensagem}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
     </div>
   );
 }

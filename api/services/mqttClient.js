@@ -30,13 +30,14 @@ const mqttOptions = {
     password: MQTT_PASSWORD,
     protocol: 'mqtts',
     reconnectPeriod: 1000,
+    clientId: 'sensor_chuva_solo'
 };
 
 function conectarMqtt(){
     console.log('Tentando conectar ao broker MQTT...');
     mqttClient = mqtt.connect(`mqtts://${MQTT_BROKER_HOST}`, mqttOptions);
 
-    mqttClient.on("connect", () => {
+    mqttClient.on('connect', () => {
         console.log("Yippieee!!! Conectado com sucesso!");
 
         mqttClient.subscribe(TOPICO_UMIDADE_SOLO, (err) => {
