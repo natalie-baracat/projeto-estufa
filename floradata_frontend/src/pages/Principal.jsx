@@ -98,7 +98,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/' ?
                             'bg-[#4f952cc4] text-white text-sm' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdGridView className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Dashboard</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Dashboard</span>
                     </Link>
            
 
@@ -108,7 +108,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/usuarios' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdPeople className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Usuários</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Usuários</span>
                     </Link> 
 
 
@@ -118,7 +118,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/novoplantio' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <PiPlantFill className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Novo Plantio</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Novo Plantio</span>
                     </Link>                    
 
 
@@ -128,7 +128,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/monitoriamentoplantio' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdTimeline className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Monitoriamento do Plantio</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Monitoriamento do Plantio</span>
                     </Link>
 
 
@@ -138,7 +138,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/controleinteligente' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <FaRobot className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Controle Inteligente</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Controle Inteligente</span>
                     </Link>
 
 
@@ -148,7 +148,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/alertasenotificacoes' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <IoIosWarning className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Alertas e Notificações</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Alertas e Notificações</span>
                     </Link>
 
 
@@ -158,7 +158,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/configuracoes' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdSettings className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Configurações e Automação</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Configurações e Automação</span>
                     </Link>
 
 
@@ -168,7 +168,7 @@ export default function Principal() {
                             duration-200 ${location.pathname == '/diagnosticosistema' ?
                             'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <IoAnalyticsOutline className='w-6 h-6 text-white' />
-                        <span className='font-medium ml-2 lg:text-lg md:hidden lg:block text-white h1Login'>Diagnóstico do Sistema</span>
+                        <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Diagnóstico do Sistema</span>
                     </Link>
                 </div>
             </nav>
