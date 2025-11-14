@@ -20,6 +20,7 @@ const TOPICO_UMIDADE_SOLO = "floradata/26/sensorumidadesolo";
 const TOPICO_CONDICAO_SOLO = "floradata/26/condicaosolo";
 const TOPICO_COMANDO_BOMBA_AGUA = "floradata/26/bombaagua";
 const TOPICO_STATUS_RELE_BOMBA = "floradata/26/statusRele";
+const TOPICO_MODO_IRRIGACAO = "floradata/26/modoIrrigacao";
 
 let mqttClient;
 let subscriptions = {};
@@ -74,6 +75,15 @@ function conectarMqtt(){
                 console.error(`Erro ao se inscrever em ${TOPICO_STATUS_RELE_BOMBA}:`, err);
             }
         });
+
+        // 
+        mqttClient.subscribe(TOPICO_MODO_IRRIGACAO, (err) => {
+            if (!err) {
+                console.log(`Inscrito no tópico ${TOPICO_MODO_IRRIGACAO}`);                
+            } else {
+                console.error(`Erro ao se inscrever em ${TOPICO_MODO_IRRIGACAO}:`, err);
+            }
+        });
     });
 
     mqttClient.on("message", (topic, message) => {
@@ -119,4 +129,4 @@ function publicar(topic, message) {
 
 conectarMqtt();
 
-export { publicar, onMessage, TOPICO_UMIDADE_SOLO, TOPICO_CONDICAO_SOLO, TOPICO_COMANDO_BOMBA_AGUA, TOPICO_STATUS_RELE_BOMBA };
+export { publicar, onMessage, TOPICO_UMIDADE_SOLO, TOPICO_CONDICAO_SOLO, TOPICO_COMANDO_BOMBA_AGUA, TOPICO_STATUS_RELE_BOMBA, TOPICO_MODO_IRRIGACAO };

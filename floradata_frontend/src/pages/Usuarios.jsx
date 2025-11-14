@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import "../components/Login.css";
+import "../styles/Login.css";
 import Estilos from "../styles/Estilos.jsx";
 
 export default function Usuarios() {
@@ -7,35 +7,23 @@ export default function Usuarios() {
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState("");
 
+  
+  // Carregar usuários da API
   useEffect(() => {
-    const dados = [
-      {
-        id: 1,
-        nome: "Maria Silva",
-        cargo: "Agricultora",
-        foto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp3o2jUwstkU8OUX_EJ8t1WnODYCyuyxKrEg&s",
-      },
-      {
-        id: 2,
-        nome: "João Oliveira",
-        cargo: "Produtor Rural",
-        foto: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
-      },
-      {
-        id: 3,
-        nome: "Carlos Santos",
-        cargo: "Engenheiro Agrônomo",
-        foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
-      },
-      {
-        id: 4,
-        nome: "Ana Costa",
-        cargo: "Pesquisadora",
-        foto: "https://i.pinimg.com/736x/f0/cf/0e/f0cf0e016e02af0f1be10a89c51a04f9.jpg",
-      },
-    ];
-    setUsuarios(dados);
+    async function buscarUsuarios() {
+      try {
+        const resposta = await fetch("http://localhost:3000/usuarios");
+        const dados = await resposta.json();
+        setUsuarios(dados);
+      } catch (erro) {
+        console.error("Erro ao carregar usuários:", erro);
+      }
+    }
+
+    buscarUsuarios();
   }, []);
+  
+
 
   const usuariosFiltrados = usuarios.filter(
     (u) =>
@@ -45,49 +33,76 @@ export default function Usuarios() {
 
   return (
     <div className="min-h-screen  p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold text-gray-800">Usuários</h1>
+    {/* HEADER PADRÃO */}
+      <header className="w-full bg-transparent p-4 rounded-lg mb-8">
+        <h1 className="text-3xl font-bold text-green-900">
+          Usuários
+        </h1>
+      </header>
+
+      {/* Container de pesquisa e filtro */}
+      <div className="w-full mt-6 flex flex-col sm:flex-row gap-3 items-center">
+
+        {/* Barra de pesquisa */}
+        <div className="relative w-full sm:w-1/2">
+          <input
+            type="text"
+            placeholder="Pesquisar usuários..."
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            className="w-full bg-white border border-green-400 rounded-xl py-3 pl-12 pr-4 
+                      text-gray-700 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+          />
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-green-700 text-lg">
+            🔍
+          </span>
+        </div>
+
+        {/* Filtro (está ao lado da barra de pesquisa) */}
         <select
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
-          className="border rounded px-2 py-1 text-sm"
+          className="w-full sm:w-1/2 border border-green-400 rounded-xl py-3.5 px-3
+                    bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-green-500
+                    focus:outline-none"
         >
-          <option value="">Filtrar</option>
-          <option value="agricultora">Agricultora</option>
-          <option value="produtor">Produtor</option>
-          <option value="engenheiro">Engenheiro</option>
+          <option value="">Todos os cargos</option>
+          <option value="Técnico de Automação">Técnico de Automação</option>
+          <option value="Especialista em IOT">Especialista em IOTl</option>
+          <option value="Analista de Dados">Analista de Dados</option>
+          <option value="Agrônomo">Agrônomo</option>
         </select>
+
       </div>
 
-      <div className="flex justify-center mb-6">
-        <input
-          type="text"
-          placeholder="Pesquisar..."
-          value={busca}
-          onChange={(e) => setBusca(e.target.value)}
-          className="border border-green-400 rounded-lg px-3 py-1 w-full max-w-md focus:outline-none focus:ring-1 focus:ring-green-500"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
+      {/* GRID de cards */}
+      <div className="w-full mt-6 mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-items-center">
         {usuariosFiltrados.map((user) => (
           <div
-            key={user.id}
-            className="bg-white rounded-2xl shadow-md p-3 text-center w-36 hover:shadow-lg transition"
-          >
-            <img5
-              src={user.foto}
-              alt={user.nome}
-              className="w-20 h-20 object-cover rounded-full mx-auto mb-2"
+            key={user.id_usuario}
+            className="bg-white rounded-2xl shadow-md p-5 w-64 h-72 flex flex-col items-center hover:shadow-xl transition">
+            {/* Foto circular */}
+            <img
+              src={user.img_perfil}
+              // src={user.img_perfil || "/img/defaultUser.png"} onError={(e) => (e.target.src = "/img/defaultUser.png")}
+              alt={`Foto de ${user.nome}`} //mas depois eu vou colocar para aparecer "foto do fulano" 
+              className="rounded-full object-cover mb-3 shadow"
+              style={{ width:"113px" , height: "113px" }}
             />
-            <p className="text-sm font-bold text-gray-800">{user.nome}</p>
-            <p className="text-xs text-gray-500 mb-1">{user.cargo}</p>
-            <button className="text-red-500 text-xs font-semibold hover:underline">
+
+            {/* Nome */}
+            <p className="text-lg font-semibold text-gray-800 text-center">{user.nome} {user.sobrenome}</p>
+
+            {/* Cargo */}
+            <p className="text-sm text-gray-500 mb-4 text-center">{user.cargo}</p>
+
+            {/* abrir hover do perfil do usuario */}
+            <button className="text-green-700 font-medium text-sm hover:underline mt-auto">
               Visualizar perfil
             </button>
           </div>
         ))}
       </div>
-    </div>
+   </div>
   );
 }

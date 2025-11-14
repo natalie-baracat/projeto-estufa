@@ -1,0 +1,235 @@
+.cadastro-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.cadastro-box {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+     flex-direction: column;
+    border-radius: 8px;
+    align-items: center;
+    text-align: center;
+    width: 650px;
+}
+
+.cadastro-logo {
+  display: block;
+  margin: 0 auto 20px auto; /* Centraliza e adiciona margem abaixo */
+  width: 100px;
+}
+
+.input-group {
+    position:relative;
+    margin-bottom: 15px;
+    text-align: left;
+    color: #333333
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px 8px 8px 35px;
+    /* border: 1px solid #e0e0e0; */
+    /* border-radius: 4px; */
+
+    border: 2px solid #e0e0e0;
+    border-radius: 8px; /* mais arredondado */
+    background: #fafafa; /* fundo igual */
+    color: #333333; /* cor do texto */
+    font-size: 1rem; /* tamanho da fonte */
+    transition: border-color 0.25s, box-shadow 0.25s; /* transições suaves */
+}
+
+.input-group input:hover {
+    border-color: #A0C57D; /* cor da borda no hover */
+}
+
+.input-group select,
+.input-group input {
+  width: 100%;
+  padding: 8px 8px 8px 35px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #333333;
+  font-size: 1rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.input-group select {
+  width: 100%;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #333333;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  appearance: none; /* Remove a aparência padrão */
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.input-group select:hover {
+  border-color: #7BAE44;
+}
+
+.input-group select:focus {
+  border-color: #A0C57D;
+  outline: none;
+}
+
+/* Customizar a seta do select */
+.input-group select::-ms-expand {
+  display: none; /* Oculta a seta padrão no IE */
+}
+
+/* .cadastro-image-container {
+  flex: 1;
+  background: url("https://i.pinimg.com/736x/37/ba/ca/37bacad8e3ed86a64b74c2de3c207355.jpg")
+    center/cover no-repeat;
+  min-height: 600px;
+} */
+
+.cadastro-half {
+  display: flex;          /* ativa o flexbox */
+  gap: 20px;              /* espaço entre as duas colunas */
+}
+
+.cadastro-half .input-group{
+  flex: 1;                /* cada input ocupa metade da largura disponível */
+  display: flex;
+  flex-direction: column;
+}
+
+.cadastro-half .cadastro-button {
+  flex: 1; /* cada botão ocupa metade */
+  margin-bottom: 0; /* remove margem inferior para não quebrar layout */
+}
+
+.cadastro-button {
+    width: 100%;
+    height: 45px;
+    background: #7BAE44; /* verdeClaro */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: backfround-color 0.3s;
+}
+
+.cadastro-button:hover {
+    background: #A0C57D; /* corBarraSelecao */
+}
+
+.cadastro-button.acesso {
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 2px solid #A0C57D;
+  color: #A0C57D;;
+  padding: 10px;
+  border: 2px solid #A0C57D;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: backfround-color 0.3s;
+}
+
+.cadastro-button.acesso:hover {
+  color: aliceblue;
+  background: #A0C57D;
+}
+
+.titulo {
+  font-family: 'Inter', sans-serif;
+  font-size: 2rem;
+  text-align: center; 
+  letter-spacing: 2px; 
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* TITULOS */
+h1, h2, h3 {
+  color: #432716; /* corTitulo */
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Inter', sans-serif;
+}
+
+/* INPUTS e TEXTOS */
+body, p, label, input, button, a {
+/* p, label { */
+  color: #333333; /* corConteudo */
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1Login {
+  color: #432716; /* corTitulo */
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Inter', sans-serif;
+}
+
+.cadastro-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  color: #7BAE44;
+  font-size: 1.2em;
+  pointer-events: none; 
+}
+
+.cadastro-error {
+  color: #ffdddd;
+  background-color: rgba(255, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .cadastro-content {
+    flex-direction: column;
+  }
+
+  .cadastro-image-container {
+    height: 250px;
+  }
+
+  .cadastro-form {
+    padding: 30px;
+  }
+}
+
+.visibilityToggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.3em;
+  padding: 5px; 
+  display: flex;
+  align-items: center; 
+}
+
+.visibilityToggle:focus {
+    outline: none;
+}

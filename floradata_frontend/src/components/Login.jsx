@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {UsuarioContext} from '../UsuarioContext';
-import "./Login.css";
+import "../styles/Login.css";
 import logo from '../assets/logo.png';
 import { enderecoServidor } from "../utils/utils.jsx";
 import { useNavigate, Link } from "react-router-dom";

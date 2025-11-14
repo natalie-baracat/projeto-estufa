@@ -13,7 +13,7 @@ import leiturasRotas from "./routes/leiturasRotas.js"
 import sensoresRotas from "./routes/sensoresRotas.js"
 import atuadoresRotas from "./routes/atuadoresRotas.js"
 import MQTTsoloUmidadeRota from "./routes/MQTTsoloUmidadeRotas.js"
-
+import MQTTcontrolecomandosRotas from "./routes/MQTTcontrolecomandosRotas.js"
 
 
 const app = express()
@@ -45,6 +45,7 @@ app.use("/leituras", leiturasRotas)
 
 /*~~~~~~~~~~~ ROTAS MQTT ~~~~~~~~~~~~~~~~~*/
 app.use("/mqtt", MQTTsoloUmidadeRota.lerDadosSensor)
+app.use("/controle", MQTTcontrolecomandosRotas)
 
 
 const porta = 3000

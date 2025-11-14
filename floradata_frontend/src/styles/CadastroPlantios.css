@@ -14,7 +14,7 @@ b4d7a3: Hover verde claro
 ===================================== */
 
 /* ===== Container Principal ===== */
-.cadastro-container {
+.cadastro-container-plantio {
   min-height: 100vh;
   /* background: linear-gradient(160deg, #B9E7CA 0%, #7BAE44 45%, #2A6041 100%); */
   background-color: #fffafa; /* neutro claro */
@@ -22,6 +22,7 @@ b4d7a3: Hover verde claro
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   font-family: "Montserrat", sans-serif;
 }
 
@@ -36,7 +37,7 @@ b4d7a3: Hover verde claro
   color: #4a7a33; /* verde Dashboard */
   padding: 60px 20px 90px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .cadastro-header h1 {
@@ -53,14 +54,24 @@ b4d7a3: Hover verde claro
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
 }
 
+html, body {
+  height: auto;
+  overflow-y: auto;
+}
+
 /* ===== Conteúdo Principal ===== */
 .cadastro-content {
   width: 100%;
   max-width: 1200px;
-  margin: -40px auto 0;
+  margin: -20px auto 0;
   padding: 0 20px;
   z-index: 10;
   position: relative;
+
+  display: flex;         
+  flex-direction: column;
+  gap: 25px; 
+  overflow: visible;
 }
 
 /* ===== Seções ===== */
@@ -125,20 +136,20 @@ b4d7a3: Hover verde claro
 }
 
 /* ===== Inputs ===== */
-.input-group {
+.input-group-plantio {
   position: relative;
   margin-bottom: 15px;
 }
-.input-group label {
+.input-group-plantio label {
   display: block;
   font-weight: 600;
   color: #333333;
   margin-bottom: 6px;
   font-size: 0.95rem;
 }
-.input-group input,
-.input-group textarea,
-.input-group select {
+.input-group-plantio input,
+.input-group-plantio textarea,
+.input-group-plantio select {
   width: 100%;
   padding: 10px 12px;
   border: 2px solid #e0e0e0;
@@ -148,14 +159,14 @@ b4d7a3: Hover verde claro
   font-size: 1rem;
   transition: border-color 0.25s, box-shadow 0.25s;
 }
-.input-group input:focus,
-.input-group textarea:focus,
-.input-group select:focus {
+.input-group-plantio input:focus,
+.input-group-plantio textarea:focus,
+.input-group-plantio select:focus {
   border-color: #7bae44;
   box-shadow: 0 0 0 3px rgba(123, 174, 68, 0.15);
   outline: none;
 }
-.input-group textarea {
+.input-group-plantio textarea {
   resize: vertical;
   min-height: 120px;
   font-family: "Montserrat", sans-serif;
@@ -179,7 +190,7 @@ b4d7a3: Hover verde claro
     flex-direction: row;
     gap: 20px;
   }
-  .input-row .input-group {
+  .input-row .input-group-plantio {
     flex: 1;
   }
 }
@@ -283,7 +294,7 @@ b4d7a3: Hover verde claro
   display: flex;
   gap: 15px;
 }
-.min-max-inputs .input-group {
+.min-max-inputs .input-group-plantio {
   flex: 1;
   margin-bottom: 0;
 }

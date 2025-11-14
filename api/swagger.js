@@ -61,7 +61,7 @@ const swaggerDefinition = {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: ['nome', 'sobrenome', 'usuario', 'telefone', 'email', 'senha', 'id_cargo'],
+                                required: ['nome', 'sobrenome', 'usuario', 'telefone', 'email', 'senha', 'id_cargo, img_perfil'],
                                 properties: {
                                     nome: { type: 'string', example: 'João' },
                                     sobrenome: { type: 'string', example: 'Silva' },

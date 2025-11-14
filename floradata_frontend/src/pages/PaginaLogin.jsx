@@ -8,7 +8,7 @@ import {
   verdeClaro,
   verdeEscuro,
 } from "../styles/Estilos";
-import "../components/Login.css"
+import "../styles/Login.css"
 
 export default function PaginaLogin() {
   const navigate = useNavigate();

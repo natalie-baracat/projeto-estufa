@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UsuarioContext } from '../UsuarioContext'
 import { useNavigate, Link, Routes, Route, useLocation} from 'react-router-dom';
-import '../components/Login.css';
+// import '../components/Login.css';
+import '../styles/Login.css';
 import Estilos, {corFundo, corBarraLateral} from "../styles/Estilos";
 
 import { MdClose, MdGridView, MdMenu, MdTimeline, MdSettings, MdPeople, MdLogout  } from 'react-icons/md';

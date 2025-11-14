@@ -1,14 +1,12 @@
 import React, { useState, useContext } from "react";
-import { UsuarioContext } from "../UsuarioContext";
+import "../styles/Cadastro.css"
 import logo from "../assets/logo.png";
 import { enderecoServidor } from "../utils/utils.jsx";
 import { useNavigate, Link } from "react-router-dom";
+
 import { MdEmail, MdPhone, MdWork, MdPerson, MdLock } from "react-icons/md";
-import "./Cadastro.css";
 
 function Cadastro() {
-  const { dadosUsuario, setDadosUsuario } = useContext(UsuarioContext);
-
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
@@ -31,144 +29,109 @@ function Cadastro() {
         alert("As senhas não coincidem!");
         return;
       }
-
-      const resposta = await fetch(`${enderecoServidor}/usuarios/cadastrar`, {
+      
+      const resposta = await fetch(`${enderecoServidor}/usuarios/new`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, sobrenome, email, cargo, telefone, senha }),
+        body: JSON.stringify({
+          nome,
+          sobrenome,
+          email,
+          id_cargo: cargo,
+          telefone,
+          senha
+        }),
       });
 
       if (resposta.ok) {
         alert("Usuário cadastrado com sucesso!");
         navigate("/login");
       } else {
-        throw new Error("Erro ao cadastrar. Verifique os dados.");
+        console.log(await resposta.text());
+        const erroServidor = await resposta.json();
+        throw new Error(erroServidor.mensagem || "❌Erro ao cadastrar.");
       }
     } catch (error) {
-      setMensagem(error.message);
+      console.error('Erro ao realizar Cadastro:', error);
+      alert(error.message);
+      return;
     }
   }
 
   return (
     <div className="cadastro-container">
-      <div className="cadastro-content">
-        <div className="cadastro-image-container"></div>
-
-        <form className="cadastro-form" onSubmit={botaoCadastro}>
-          <img src={logo} alt="Logo Floradata" className="cadastro-logo" />
-          <h2 className="cadastro-title">Cadastra-se</h2>
-
-          <div className="cadastro-row">
-            <div className="cadastro-half">
-              <label>Nome:</label>
-              <div className="cadastro-input-wrapper">
-                <MdPerson className="cadastro-icon" />
-                <input
-                  type="text"
-                  placeholder="Digite seu nome"
-                  value={nome}
-                  onChange={(e) => setNome(e.target.value)}
-                  required
-                />
-              </div>
+      <div className="cadastro-box">
+        <img src={logo} alt="Logo Floradata" style={{width:'120px'}} className="cadastro-logo"/>
+        <h2 className="titulo">Cadastre-se</h2>
+        
+        <form onSubmit={botaoCadastro}>
+          <div className="cadastro-half">
+            <div className="input-group">
+              <MdPerson className="cadastro-icon" />
+              <label>Nome</label>
+              <input onChange={(e) => setNome(e.target.value)} value={nome} type="text"
+              placeholder="Digite seu nome" required />
             </div>
-
-            <div className="cadastro-half">
-              <label>Sobrenome:</label>
-              <div className="cadastro-input-wrapper">
-                <MdPerson className="cadastro-icon" />
-                <input
-                  type="text"
-                  placeholder="Digite seu sobrenome"
-                  value={sobrenome}
-                  onChange={(e) => setSobrenome(e.target.value)}
-                  required
-                />
-              </div>
+            <div className="input-group">
+              <MdPerson className="cadastro-icon" />
+              <label>Sobrenome</label>
+              <input onChange={(e) => setSobrenome(e.target.value)} value={sobrenome} type="text"
+              placeholder="Digite seu Sobrenome Completo" required />
             </div>
           </div>
 
-          <label>Email:</label>
-          <div className="cadastro-input-wrapper">
-            <MdEmail className="cadastro-icon" />
-            <input
-              type="email"
-              placeholder="Digite seu email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <div className="input-group">
+              <MdPerson className="cadastro-icon" />
+              <label>Email</label>
+              <input onChange={(e) => setEmail(e.target.value)} value={email} type="email"
+              placeholder="Digite seu email" required />
           </div>
 
-          <div className="cadastro-row">
-            <div className="cadastro-half">
-              <label>Cargo:</label>
-              <div className="cadastro-input-wrapper">
+          <div className="cadastro-half">
+            {/* fazer select */}
+            <div className="input-group">
                 <MdWork className="cadastro-icon" />
-                <input
-                  type="text"
-                  placeholder="Digite seu cargo"
-                  value={cargo}
-                  onChange={(e) => setCargo(e.target.value)}
-                  required
-                />
+                <label>Cargo</label>
+                <select value={cargo} onChange={(e) => setCargo(e.target.value)} required>
+                  <option value="">Selecione seu cargo</option>
+                  <option value="1">Técnico de Automação</option>
+                  <option value="2">Especialista em IOT</option>
+                  <option value="3">Analista de Dado</option>
+                  <option value="4">Agrônomo</option>
+                </select>
               </div>
-            </div>
-
-            <div className="cadastro-half">
-              <label>Telefone:</label>
-              <div className="cadastro-input-wrapper">
-                <MdPhone className="cadastro-icon" />
-                <input
-                  type="tel"
-                  placeholder="Digite seu telefone"
-                  value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
-                  required
-                />
-              </div>
+            <div className="input-group">
+              <MdPhone className="cadastro-icon" />
+              <label>Telefone</label>
+              <input onChange={(e) => setTelefone(e.target.value)} value={telefone} type="tel"
+              placeholder="Digite seu telefone" required />
             </div>
           </div>
-
-          <div className="cadastro-row">
-            <div className="cadastro-half">
-              <label>Senha:</label>
-              <div className="cadastro-input-wrapper">
-                <MdLock className="cadastro-icon" />
-                <input
-                  type="password"
-                  placeholder="Crie sua senha"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                  required
-                />
-              </div>
+          
+          <div className="cadastro-half">
+            <div className="input-group">
+              <MdLock className="cadastro-icon" />
+              <label>Senha</label>
+              <input onChange={(e) => setSenha(e.target.value)} value={senha} type="password"
+              placeholder="Crie sua Senha" required />
             </div>
-
-            <div className="cadastro-half">
-              <label>Confirmar Senha:</label>
-              <div className="cadastro-input-wrapper">
-                <MdLock className="cadastro-icon" />
-                <input
-                  type="password"
-                  placeholder="Confirme sua senha"
-                  value={confirmarSenha}
-                  onChange={(e) => setConfirmarSenha(e.target.value)}
-                  required
-                />
-              </div>
+            <div className="input-group">
+              <MdLock className="cadastro-icon" />
+              <label>Confirmar Senha</label>
+              <input onChange={(e) => setConfirmarSenha(e.target.value)} value={confirmarSenha} type="password"
+              placeholder="Confirme sua senha" required />
             </div>
           </div>
-
+        
           {mensagem && <p className="cadastro-error">{mensagem}</p>}
 
-          <div className="cadastro-button-row">
-            <button type="submit" className="cadastro-button">
-              Cadastrar
-            </button>
-            <Link to="/login" className="cadastro-button acesso">
-              Acessar
-            </Link>
+          <div className="cadastro-half ">
+              <button type="submit" className="cadastro-button">
+                Cadastrar
+              </button>
+              <Link to="/login" className="cadastro-button acesso">
+                Acessar
+              </Link>
           </div>
         </form>
       </div>

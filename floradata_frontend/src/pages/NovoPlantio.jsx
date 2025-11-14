@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import "../styles/CadastroPlantios.css"
 import { enderecoServidor } from "../utils/utils.jsx";
@@ -149,7 +148,7 @@ export default function NovoPlantio() {
   }
 
    return (
-    <div className="cadastro-container bg-gradient-to-br from-lime-50 to-white">
+    <div className="cadastro-container-plantio bg-gradient-to-br from-lime-50 to-white">
       {/* Header com imagem de fundo */}
       {/* quero adaptar para ficar mais semelhante a da dash */}
       <div className="cadastro-header">
@@ -168,7 +167,7 @@ export default function NovoPlantio() {
             <div className="info-grid">
               {/* Coluna Esquerda */}
               <div className="info-left">
-                <div className="input-group full-width">
+                <div className="input-group-plantio full-width">
                   <label>Nome do Plantio *</label>
                   <input
                     type="text"
@@ -180,7 +179,7 @@ export default function NovoPlantio() {
                 </div>
 
                 <div className="input-row">
-                  <div className="input-group">
+                  <div className="input-group-plantio">
                     <MdLocalFlorist className="inputIcon" />
                     <label>Espécie *</label>
                     <input
@@ -205,7 +204,7 @@ export default function NovoPlantio() {
 
               {/* Coluna Direita */}
               <div className="info-right">
-                <div className="input-group full-width">
+                <div className="input-group-plantio full-width">
                   <label>Descrição Inicial</label>
                   <textarea
                     value={descricaoInicial}
@@ -223,7 +222,7 @@ export default function NovoPlantio() {
             <h2 className="section-title">🌱 Ciclo Produtivo</h2>
             
             <div className="input-row">
-              <div className="input-group">
+              <div className="input-group-plantio">
                 <MdCalendarToday className="inputIcon" />
                 <label>Data do Plantio</label>
                 <input
@@ -234,7 +233,7 @@ export default function NovoPlantio() {
                 />
               </div>
 
-              <div className="input-group">
+              <div className="input-group-plantio">
                 <MdCalendarToday className="inputIcon" />
                 <label>Data Estimada de Colheita</label>
                 <input
@@ -247,7 +246,7 @@ export default function NovoPlantio() {
             </div>
 
             <div className="input-row">
-              <div className="input-group">
+              <div className="input-group-plantio">
                 <label>Estágio Atual</label>
                 <input
                   type="text"
@@ -257,7 +256,7 @@ export default function NovoPlantio() {
                 />
               </div>
 
-              <div className="input-group">
+              <div className="input-group-plantio">
                 <label>Tempo Médio do Ciclo (dias)</label>
                 <input
                   type="number"
@@ -274,7 +273,7 @@ export default function NovoPlantio() {
           <section className="form-section fade-in">
             <h2 className="section-title">📍 Localização</h2>
             
-            <div className="input-group">
+            <div className="input-group-plantio">
               <MdLocationOn className="inputIcon" />
               <label>Setor ou Área do Cultivo</label>
               <input
@@ -330,7 +329,7 @@ export default function NovoPlantio() {
             <h2 className="section-title">🌾 Características do Solo e Insumos</h2>
 
             <div className="input-row">
-              <div className="input-group">
+              <div className="input-group-plantio">
                 <label>Tipo de Adubação</label>
                 <input
                   type="text"
@@ -340,7 +339,7 @@ export default function NovoPlantio() {
                 />
               </div>
 
-              <div className="input-group">
+              <div className="input-group-plantio">
                 <label>Substrato Utilizado</label>
                 <input
                   type="text"
@@ -351,7 +350,7 @@ export default function NovoPlantio() {
               </div>
             </div>
 
-            <div className="input-group full-width">
+            <div className="input-group-plantio full-width">
               <label>Tipo de Solo</label>
               <input
                 type="text"
@@ -371,7 +370,7 @@ export default function NovoPlantio() {
               <div className="parametro-group">
                 <label className="parametro-label">Umidade do Solo (%):</label>
                 <div className="min-max-inputs">
-                  <div className="input-group">
+                  <div className="input-group-plantio">
                     <label className="small-label">Mín:</label>
                     <input
                       type="number"
@@ -383,7 +382,7 @@ export default function NovoPlantio() {
                       step="0.1"
                     />
                   </div>
-                  <div className="input-group">
+                  <div className="input-group-plantio">
                     <label className="small-label">Máx:</label>
                     <input
                       type="number"
@@ -401,7 +400,7 @@ export default function NovoPlantio() {
               <div className="parametro-group">
                 <label className="parametro-label">Temperatura (°C):</label>
                 <div className="min-max-inputs">
-                  <div className="input-group">
+                  <div className="input-group-plantio">
                     <label className="small-label">Mín:</label>
                     <input
                       type="number"
@@ -411,7 +410,7 @@ export default function NovoPlantio() {
                       step="0.1"
                     />
                   </div>
-                  <div className="input-group">
+                  <div className="input-group-plantio">
                     <label className="small-label">Máx:</label>
                     <input
                       type="number"
