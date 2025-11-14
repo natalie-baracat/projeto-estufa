@@ -35,7 +35,6 @@ export default function TesteDiag() {
       buscarStatus();
     }, 2000);
     
-
     /* Temperatura
     // onMessage(TOPICO_TEMPERATURA, (mensagem) => {
     //   const temp = parseFloat(mensagem);
@@ -53,7 +52,6 @@ export default function TesteDiag() {
     //   verificarUmidade(umidade);
     //   atualizarHora();
     // });
-    */
 
     // Umidade do Solo
     // onMessage(TOPICO_UMIDADE_SOLO, (mensagem) => {
@@ -90,7 +88,7 @@ export default function TesteDiag() {
     //   const bombaLigada = mensagem.toLowerCase() === 'on' || mensagem === '1';
     //   atualizarComponente('Sistema de Irrigação', bombaLigada ? 'ativo' : 'inativo');
     //   atualizarHora();
-    // });
+    // }); */
   }, []);
 
   const atualizarHora = () => {
@@ -202,9 +200,9 @@ export default function TesteDiag() {
           </div>
           <button
             onClick={atualizar}
-            className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
+            className="w-full md:w-auto bg-green-600 hover:bg-green-700 !text-white font-semibold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
           >
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="w-5 h-5 text-white" />
             ATUALIZAR DIAGNÓSTICO
           </button>
         </div>
@@ -262,7 +260,7 @@ export default function TesteDiag() {
                 <Droplets className="w-6 h-6 mx-auto mb-2 text-green-600" />
                 <div className="text-xs text-gray-600 mb-1">Condição Solo</div>
                 <div className="text-sm font-bold text-gray-800">
-                  {condicaoSolo !== '--' ? condicaoSolo : '--'}
+                  {condicaoSolo !== '--' ? `${condicaoSolo}` : '--'}
                 </div>
               </div>
             </div>
@@ -274,6 +272,7 @@ export default function TesteDiag() {
           <h2 className="text-xl font-bold text-gray-800 mb-6">COMPONENTES</h2>
 
           <div className="space-y-3">
+            {/* listar os componentes sensores e atuadores */}
             {componentes.map((componente, indice) => (
               <div key={indice} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                 <div className="flex items-center gap-3 flex-1">
