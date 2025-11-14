@@ -19,6 +19,7 @@ const MQTT_PASSWORD = "Mercipourlevenin7";
 const TOPICO_UMIDADE_SOLO = "floradata/26/sensorumidadesolo";
 const TOPICO_CONDICAO_SOLO = "floradata/26/condicaosolo";
 const TOPICO_COMANDO_BOMBA_AGUA = "floradata/26/bombaagua";
+const TOPICO_STATUS_RELE_BOMBA = "floradata/26/statusRele";
 
 let mqttClient;
 let subscriptions = {};
@@ -56,11 +57,21 @@ function conectarMqtt(){
             }
         });
 
+        // isso vai MANDAR o comando PARA a bomba
         mqttClient.subscribe(TOPICO_COMANDO_BOMBA_AGUA, (err) => {
             if (!err) {
                 console.log(`Inscrito no tópico ${TOPICO_COMANDO_BOMBA_AGUA}`);
             } else {
                 console.error(`Erro ao se inscrever em ${TOPICO_COMANDO_BOMBA_AGUA}:`, err);
+            }
+        });
+
+        // isso RECEBE E EXIBE o status do rele (ou seja, da propria bomba)
+        mqttClient.subscribe(TOPICO_STATUS_RELE_BOMBA, (err) => {
+            if (!err) {
+                console.log(`Inscrito no tópico ${TOPICO_STATUS_RELE_BOMBA}`);                
+            } else {
+                console.error(`Erro ao se inscrever em ${TOPICO_STATUS_RELE_BOMBA}:`, err);
             }
         });
     });
@@ -108,4 +119,4 @@ function publicar(topic, message) {
 
 conectarMqtt();
 
-export { publicar, onMessage, TOPICO_UMIDADE_SOLO, TOPICO_CONDICAO_SOLO, TOPICO_COMANDO_BOMBA_AGUA };
+export { publicar, onMessage, TOPICO_UMIDADE_SOLO, TOPICO_CONDICAO_SOLO, TOPICO_COMANDO_BOMBA_AGUA, TOPICO_STATUS_RELE_BOMBA };

@@ -23,7 +23,29 @@ export default function TesteDiag() {
       const dados = await resposta.json();
       setUmidadeSolo(dados.umidadeSolo);
       setCondicaoSolo(dados.condicaoSolo);
+
+      const statusBomba = dados.statusReleBomba;   // <= vem do TOPICO_STATUS_RELE_BOMBA
+      const agora = new Date();
+      const horaFormatada = `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`;
+
+      // transformar LIGADO/DESLIGADO em “ativo/inativo”
+      const novoStatus =
+        statusBomba === "LIGADO"
+          ? "ativo"
+          : "inativo";
+
+      // atualizar componente no frontend
+      setComponentes(anterior =>
+        anterior.map(comp =>
+          comp.nome === "Sistema de Irrigação"
+            ? { ...comp, status: novoStatus, hora: horaFormatada }
+            : comp
+        )
+      );
+
       atualizarHora()
+
+
     } catch (error) {
       console.error("erro ao buscar status", error);
     }
@@ -82,13 +104,13 @@ export default function TesteDiag() {
     //   }
     //   atualizarHora();
     // });
-
+*/
     // Bomba d'Água
-    // onMessage(TOPICO_COMANDO_BOMBA_AGUA, (mensagem) => {
-    //   const bombaLigada = mensagem.toLowerCase() === 'on' || mensagem === '1';
-    //   atualizarComponente('Sistema de Irrigação', bombaLigada ? 'ativo' : 'inativo');
-    //   atualizarHora();
-    // }); */
+
+    // EU ALTEREI AQUI MAS TA ERRADO
+      // const bombaLigada = message3.toLowerCase() === 'on' || message3 === '1';
+      // atualizarComponente('Sistema de Irrigação', bombaLigada ? 'ativo' : 'inativo');
+      // atualizarHora(); 
   }, []);
 
   const atualizarHora = () => {
@@ -97,16 +119,6 @@ export default function TesteDiag() {
     setUltimaAtualizacao(formatado);
   };
 
-  const atualizarComponente = (nomeComponente, novoStatus) => {
-    const agora = new Date();
-    const horaFormatada = `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`;
-
-    setComponentes(anterior => anterior.map(comp =>
-      comp.nome === nomeComponente
-        ? { ...comp, status: novoStatus, hora: horaFormatada }
-        : comp
-    ));
-  };
 
   // const verificarTemperatura = (temp) => {
   //   if (temp > 30) {
