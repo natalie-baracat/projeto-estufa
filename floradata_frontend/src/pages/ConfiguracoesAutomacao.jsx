@@ -1,5 +1,6 @@
 import React from 'react';
-import '../components/Login.css'
+// import '../components/Login.css'
+import '../styles/Login.css'
 import Estilos from '../styles/Estilos';
 
 export default function ConfiguracoesAutomacao() {

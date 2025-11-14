@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import '../components/Login.css'
+// import '../components/Login.css'
+import '../styles/Login.css'
 import Estilos from '../styles/Estilos';
 import Layout from '../components/Layout';
 

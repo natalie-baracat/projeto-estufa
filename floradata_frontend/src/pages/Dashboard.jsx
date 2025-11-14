@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import '../components/Login.css';
+// import '../components/Login.css';
+import '../styles/Login.css';
 import Layout from '../components/Layout';
 import { UsuarioContext } from '../UsuarioContext';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts"
@@ -58,7 +59,7 @@ export default function Dashboard() {
         - md:p-6 lg:py-8: Aumenta o padding em telas maiores.
         - mx-auto max-w-7xl: Centraliza o conteúdo e limita a largura máxima, crucial para responsividade.
       */}
-      <div className="min-h-screen p-4 md:p-6 lg:py-8 mx-auto max-w-7xl flex flex-col items-center w-full">
+      <div className="min-h-screen p-4 md:p-6 lg:py-8 mx-auto max-w-6xl flex flex-col items-center w-full">
 
         {/* Saudação (w-full para ocupar o espaço do max-w-7xl) */}
         <div className="w-full">
@@ -72,7 +73,7 @@ export default function Dashboard() {
 
         {/* Mensagem Principal */}
         <div className="bg-lime-600/90 rounded-tl-4xl rounded-br-4xl shadow-md px-5 py-4 mt-4 text-center  border-[0.5px] border-lime-100 w-full">
-          <p className="!text-white/90 lg:text-3xl md:text-xl font-semibold text-sm mb-1 transition">
+          <p className="!text-white/90 lg:text-2xl md:text-xl font-semibold text-sm mb-1 transition">
             Acompanhe o desenvolvimento das suas plantas em tempo real!
           </p>
           <p className="!text-white/90 text-sm lg:text-xl md:text-lg opacity-90">
