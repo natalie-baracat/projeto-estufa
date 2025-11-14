@@ -5,8 +5,6 @@ import { UsuarioProvider } from './UsuarioContext';
 import PaginaCadastro from "./pages/Cadastro.jsx"
 import NovoPlantio from './pages/NovoPlantio.jsx';
 import EditarPlantio from './pages/EditarPlantio.jsx'
-import PlantioMorango from './pages/PlantioMorango.jsx'
-import PlantioMilho from './pages/PlantioMilho.jsx'
 // import TesteDiag from './pages/TesteDiagnostico.jsx';
 // import "./components/Index.css"
 // import "./styles/Index.css"
@@ -21,8 +19,6 @@ export default function App() {
                      <Route path='/*' element={<Principal />} />
                      <Route path='/novoplantio' element={<NovoPlantio />} />
                      <Route path="/editar-plantio" element={<EditarPlantio />} />
-                     <Route path="/PlantioMorango" element={<PlantioMorango />} />
-                     <Route path="/PlantioMilho" element={<PlantioMilho />} />
                      {/* <Route path="/testediag" element={<TesteDiag />} /> */}
                  </Routes>
              </Router>

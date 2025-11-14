@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { enderecoServidor } from "../utils/utils.jsx";
+import { enderecoServidor } from "../utils/utils";
 
 export default function ControleInteligente() {
   const [modo, setModo] = useState("AUTOMATICO");
@@ -9,6 +9,9 @@ export default function ControleInteligente() {
   // Dados do backend
   const [umidadeSolo, setUmidadeSolo] = useState("--");
   const [condicaoSolo, setCondicaoSolo] = useState("--");
+
+  // ✅ NOVO: Flag para evitar sobrescrever durante edição
+  const [editandoComando, setEditandoComando] = useState(false);
 
   // ------------------------------------------
   // BUSCAR STATUS ATUAL (/mqtt)
@@ -22,8 +25,8 @@ export default function ControleInteligente() {
       setCondicaoSolo(dados.condicaoSolo);
       setStatusRele(dados.statusReleBomba);
 
-      // Se está DESLIGADO/LIGADO, sincroniza o botão manual
-      if (modo === "MANUAL") {
+      // ✅ SÓ SINCRONIZA SE NÃO ESTIVER EDITANDO
+      if (modo === "MANUAL" && !editandoComando) {
         setComandoManual(dados.statusReleBomba === "LIGADO" ? "ON" : "OFF");
       }
 
@@ -36,21 +39,21 @@ export default function ControleInteligente() {
     buscarStatus();
     const interval = setInterval(buscarStatus, 2000);
     return () => clearInterval(interval);
-  }, [modo]);
+  }, [modo, editandoComando]); // ✅ Adiciona editandoComando como dependência
 
   // ------------------------------------------
   // SALVAR CONFIGURAÇÕES
   // ------------------------------------------
   const salvar = async () => {
     try {
-      // 1 — Envia o modo
+      // 1 – Envia o modo
       await fetch(`${enderecoServidor}/controle/modo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ modo })
       });
 
-      // 2 — Se manual, envia ON/OFF
+      // 2 – Se manual, envia ON/OFF
       if (modo === "MANUAL") {
         await fetch(`${enderecoServidor}/controle/comando`, {
           method: "POST",
@@ -60,11 +63,24 @@ export default function ControleInteligente() {
       }
 
       alert("Configurações salvas!");
+      
+      // ✅ Libera a edição após salvar
+      setEditandoComando(false);
+      
+      // ✅ Aguarda um pouco e busca o status atualizado
+      setTimeout(buscarStatus, 500);
 
     } catch (err) {
       console.error("Erro ao salvar configurações:", err);
       alert("Erro ao salvar.");
+      setEditandoComando(false);
     }
+  };
+
+  // ✅ NOVA FUNÇÃO: Handler do toggle manual
+  const handleToggleManual = () => {
+    setEditandoComando(true);
+    setComandoManual(comandoManual === "ON" ? "OFF" : "ON");
   };
 
   // ------------------------------------------
@@ -88,7 +104,7 @@ export default function ControleInteligente() {
   }
 
   return (
-    <div className="min-h-screen flex items-start justify-center p-4">
+    <div className="min-h-screen flex items-start justify-center p-4 bg-gray-50">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-6 border border-gray-100">
 
         <h1 className="text-2xl font-semibold mb-4">Controle Inteligente</h1>
@@ -101,7 +117,10 @@ export default function ControleInteligente() {
             <span className="text-sm text-gray-500">Automático</span>
             <Toggle
               checked={modo === "MANUAL"}
-              onChange={() => setModo(modo === "MANUAL" ? "AUTOMATICO" : "MANUAL")}
+              onChange={() => {
+                setModo(modo === "MANUAL" ? "AUTOMATICO" : "MANUAL");
+                setEditandoComando(false);
+              }}
             />
             <span className="text-sm text-gray-500">Manual</span>
           </div>
@@ -116,9 +135,7 @@ export default function ControleInteligente() {
               <span className="text-sm text-gray-500">Desligado</span>
               <Toggle
                 checked={comandoManual === "ON"}
-                onChange={() =>
-                  setComandoManual(comandoManual === "ON" ? "OFF" : "ON")
-                }
+                onChange={handleToggleManual}
               />
               <span className="text-sm text-gray-500">Ligado</span>
             </div>
@@ -126,6 +143,13 @@ export default function ControleInteligente() {
             <p className="text-xs text-gray-500 mt-2">
               Status atual do relé: <b>{statusRele}</b>
             </p>
+            
+            {/* ✅ INDICADOR VISUAL DE MUDANÇA NÃO SALVA */}
+            {editandoComando && (
+              <p className="text-xs text-orange-600 mt-2 font-medium">
+                ⚠️ Clique em "Salvar Configurações" para aplicar
+              </p>
+            )}
           </section>
         )}
 
@@ -144,9 +168,13 @@ export default function ControleInteligente() {
         {/* BOTÃO SALVAR */}
         <button
           onClick={salvar}
-          className="w-full bg-lime-600 text-white py-3 rounded-lg shadow-md font-semibold"
+          className={`w-full py-3 rounded-lg shadow-md font-semibold transition ${
+            editandoComando 
+              ? "bg-orange-600 text-white animate-pulse" 
+              : "bg-lime-600 text-white"
+          }`}
         >
-          Salvar Configurações
+          {editandoComando ? "⚠️ Salvar Alterações" : "Salvar Configurações"}
         </button>
       </div>
     </div>

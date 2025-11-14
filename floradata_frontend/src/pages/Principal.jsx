@@ -22,6 +22,8 @@ import Usuarios from './Usuarios';
 import logo from "../assets/logo.png";
 import Layout from '../components/Layout';
 import logobranca from "../assets/Floradata-Branco-semfundo.png"
+import PlantioMorango from "./PlantioMorango.jsx"
+import PlantioMilho from "./PlantioMilho.jsx"
 
 
 export default function Principal() {
@@ -197,6 +199,8 @@ export default function Principal() {
                         <Route path='/alertasenotificacoes' element={<AlertasNotificacoes />} />
                         <Route path='/configuracoes' element={<ConfiguracoesAutomacao />} />
                         <Route path='/diagnosticosistema' element={<DiagnosticoSistema />} />
+                        <Route path='/plantioMorango' element={<PlantioMorango />} />
+                        <Route path='/plantioMilho' element={<PlantioMilho />} />
 
                     </Routes>
                 </main>

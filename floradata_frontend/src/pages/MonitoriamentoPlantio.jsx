@@ -11,7 +11,7 @@ export default function MonitoramentoPlantio() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
         {/* Card Morango */}
-        <div onClick={() => navigate('/PlantioMorango')} className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg cursor-pointer">
+        <div onClick={() => navigate('/plantioMorango')} className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg cursor-pointer">
           <img
             src="/img/morango.jpg"
             alt="Morango"
@@ -23,7 +23,7 @@ export default function MonitoramentoPlantio() {
         </div>
 
         {/* Card Milho */}
-        <div onClick={() => navigate('/PlantioMilho')} className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg cursor-pointer">
+        <div onClick={() => navigate('/plantioMilho')} className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg cursor-pointer">
           <img
             src="/img/milho.jpg"
             alt="Milho"

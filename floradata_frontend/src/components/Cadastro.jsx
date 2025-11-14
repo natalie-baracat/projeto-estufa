@@ -4,52 +4,99 @@ import logo from "../assets/logo.png";
 import { enderecoServidor } from "../utils/utils.jsx";
 import { useNavigate, Link } from "react-router-dom";
 
-import { MdEmail, MdPhone, MdWork, MdPerson, MdLock } from "react-icons/md";
+import { MdEmail, MdPhone, MdWork, MdPerson, MdLock, MdPhotoCamera } from "react-icons/md";
 
 function Cadastro() {
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [cargo, setCargo] = useState("");
   const [telefone, setTelefone] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [mensagem, setMensagem] = useState("");
+  const [imgPerfil, setImgPerfil] = useState(null);
 
   const navigate = useNavigate();
 
+
   async function botaoCadastro(e) {
-    e.preventDefault();
+  e.preventDefault();
+  try {
+    if (!nome || !sobrenome || !email || !cargo || !telefone || !senha || !confirmarSenha) {
+      throw new Error("Preencha todos os campos.");
+    }
+
+    if (senha !== confirmarSenha) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("nome", nome);
+    formData.append("sobrenome", sobrenome);
+    formData.append("usuario", usuario);
+    formData.append("email", email);
+    formData.append("id_cargo", cargo);
+    formData.append("telefone", telefone);
+    formData.append("senha", senha);
+    // if (imgPerfil) formData.append("imgPerfil", imgPerfil);
+
+    const resposta = await fetch(`${enderecoServidor}/usuarios/new`, {
+      method: "POST",
+      body: formData
+    });
+
+    // Verifica se a resposta é JSON
+    const conteudo = await resposta.text();
+    let dados;
     try {
-      if (!nome || !sobrenome || !email || !cargo || !telefone || !senha || !confirmarSenha) {
-        throw new Error("Preencha todos os campos.");
-      }
+      dados = JSON.parse(conteudo);
+    } catch {
+      dados = null;
+    }
 
-      if (senha !== confirmarSenha) {
-        alert("As senhas não coincidem!");
-        return;
-      }
-      
-      const resposta = await fetch(`${enderecoServidor}/usuarios/new`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome,
-          sobrenome,
-          email,
-          id_cargo: cargo,
-          telefone,
-          senha
-        }),
-      });
+    if (resposta.ok) {
+      alert("Usuário cadastrado com sucesso!");
+      navigate("/login");
+    } else {
+      const msgErro = dados?.mensagem || "Erro ao cadastrar usuário.";
+      throw new Error(msgErro);
 
-      if (resposta.ok) {
-        alert("Usuário cadastrado com sucesso!");
-        navigate("/login");
-      } else {
-        console.log(await resposta.text());
-        const erroServidor = await resposta.json();
-        throw new Error(erroServidor.mensagem || "❌Erro ao cadastrar.");
+  // async function botaoCadastro(e) {
+  //   e.preventDefault();
+  //   try {
+  //     if (!nome || !sobrenome || !email || !cargo || !telefone || !senha || !confirmarSenha) {
+  //       throw new Error("Preencha todos os campos.");
+  //     }
+
+  //     if (senha !== confirmarSenha) {
+  //       alert("As senhas não coincidem!");
+  //       return;
+  //     }
+
+  //     const resposta = await fetch(`${enderecoServidor}/usuarios/new`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         nome,
+  //         sobrenome,
+  //         usuario,
+  //         email,
+  //         id_cargo: cargo,
+  //         telefone,
+  //         senha
+  //       }),
+  //     });
+
+  //     if (resposta.ok) {
+  //       alert("Usuário cadastrado com sucesso!");
+  //       navigate("/login");
+  //     } else {
+  //       console.log(await resposta.text());
+  //       const erroServidor = await resposta.json();
+  //       throw new Error(erroServidor.mensagem || "❌Erro ao cadastrar.");
       }
     } catch (error) {
       console.error('Erro ao realizar Cadastro:', error);
@@ -78,6 +125,30 @@ function Cadastro() {
               <input onChange={(e) => setSobrenome(e.target.value)} value={sobrenome} type="text"
               placeholder="Digite seu Sobrenome Completo" required />
             </div>
+          </div>
+
+          <div className="cadastro-half">
+            <div className="input-group">
+              <MdPerson className="cadastro-icon" />
+              <label>Usuário</label>
+              <input
+                onChange={(e) => setUsuario(e.target.value)}
+                value={usuario}
+                type="text"
+                placeholder="Escolha um nome de usuário"
+                required
+              />
+            </div>
+            <div className="input-group">
+              <MdPhotoCamera className="cadastro-icon"/>
+              <label>Foto de Perfil</label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => setImgPerfil(e.target.files[0])}
+              />
+            </div>
+
           </div>
 
           <div className="input-group">

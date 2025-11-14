@@ -26,17 +26,17 @@ const DADOS_PLANTAS = [
   {
     id: 4,
     nome: "Alface",
-    imagem: "https://vidasaudavel.imendes.com.br/wp-content/uploads/2021/05/alface-americana.jpg",
+    imagem: "https://www.embrapa.br/bme_images/o/185080040o.jpg",
   },
   {
     id: 5,
     nome: "Tomate Cereja",
-    imagem: "https://images.tcdn.com.br/img/img_prod/700806/semente_de_tomate_cereja_preta_black_cherry_1615_1_20200424095535.jpg",
+    imagem: "https://www.semadesc.ms.gov.br/wp-content/uploads/2016/12/1609_tomate_cereja_2.jpg",
   },
   {
     id: 6,
     nome: "Cenoura",
-    imagem: "https://a-static.mlcdn.com.br/450x450/sementes-cenoura-brasilia-ca-1000-sementes-topseed-garden/jardimshop/15949506454/22c0791444d32f4165d21a50a1b0be25.jpeg",
+    imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCFspbojG_AEk4tP1iqu89by1xM_xQ1NPjmw&s",
   },
 ];
 
