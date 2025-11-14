@@ -56,61 +56,6 @@ export default function TesteDiag() {
       // Seu código aqui
       buscarStatus();
     }, 2000);
-    
-    /* Temperatura
-    // onMessage(TOPICO_TEMPERATURA, (mensagem) => {
-    //   const temp = parseFloat(mensagem);
-    //   setMetricas(anterior => ({ ...anterior, temperatura: temp.toFixed(1) }));
-    //   atualizarComponente('Sensor Temperatura/Umidade', 'ativo');
-    //   verificarTemperatura(temp);
-    //   atualizarHora();
-    // });
-
-    // // Umidade do Ar
-    // onMessage(TOPICO_UMIDADE, (mensagem) => {
-    //   const umidade = parseFloat(mensagem);
-    //   setMetricas(anterior => ({ ...anterior, umidade: umidade.toFixed(1) }));
-    //   atualizarComponente('Sensor Temperatura/Umidade', 'ativo');
-    //   verificarUmidade(umidade);
-    //   atualizarHora();
-    // });
-
-    // Umidade do Solo
-    // onMessage(TOPICO_UMIDADE_SOLO, (mensagem) => {
-    //   const umidadeSolo = parseFloat(mensagem);
-    //   // setMetricas(anterior => ({ ...anterior, umidadeSolo: umidadeSolo.toFixed(1) }));
-    //   setUmidadeSolo(umidadeSolo)
-    //   console.log(umidadeSolo);
-      
-    //   atualizarComponente('Sensor Umidade do Solo', 'ativo');
-    //   verificarUmidadeSolo(umidadeSolo);
-    //   atualizarHora();
-    // });
-
-    // Condição do Solo
-    // onMessage(TOPICO_CONDICAO_SOLO, (mensagem) => {
-    //   // setMetricas(anterior => ({ ...anterior, condicaoSolo: mensagem }));
-    //   setCondicaoSolo(mensagem)
-    //   atualizarHora();
-    // });
-
-    // // Status da Boia
-    // onMessage(STATUS_BOIA, (mensagem) => {
-    //   const boiaOk = mensagem.toLowerCase() === 'cheio' || mensagem === '1';
-    //   if (!boiaOk) {
-    //     adicionarAlerta('aviso', 'Nível de água baixo no reservatório');
-    //   } else {
-    //     removerAlerta('Nível de água');
-    //   }
-    //   atualizarHora();
-    // });
-*/
-    // Bomba d'Água
-
-    // EU ALTEREI AQUI MAS TA ERRADO
-      // const bombaLigada = message3.toLowerCase() === 'on' || message3 === '1';
-      // atualizarComponente('Sistema de Irrigação', bombaLigada ? 'ativo' : 'inativo');
-      // atualizarHora(); 
   }, []);
 
   const atualizarHora = () => {
