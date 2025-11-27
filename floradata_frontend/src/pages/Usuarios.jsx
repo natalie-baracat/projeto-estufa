@@ -7,7 +7,10 @@ export default function Usuarios() {
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState("");
 
-  
+  // Modal e usuário selecionado
+  const [modalAberto, setModalAberto] = useState(false);
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
+
   // Carregar usuários da API
   useEffect(() => {
     async function buscarUsuarios() {
@@ -22,9 +25,18 @@ export default function Usuarios() {
 
     buscarUsuarios();
   }, []);
+
+  // Abrir/fechar modal
+  const abrirModal = (user) => {
+    setUsuarioSelecionado(user);
+    setModalAberto(true);
+  };
+
+  const fecharModal = () => {
+    setModalAberto(false);
+    setUsuarioSelecionado(null);
+  };
   
-
-
   const usuariosFiltrados = usuarios.filter(
     (u) =>
       u.nome.toLowerCase().includes(busca.toLowerCase()) &&
@@ -68,7 +80,7 @@ export default function Usuarios() {
         >
           <option value="">Todos os cargos</option>
           <option value="Técnico de Automação">Técnico de Automação</option>
-          <option value="Especialista em IOT">Especialista em IOTl</option>
+          <option value="Especialista em IOT">Especialista em IOT</option>
           <option value="Analista de Dados">Analista de Dados</option>
           <option value="Agrônomo">Agrônomo</option>
         </select>
@@ -97,12 +109,86 @@ export default function Usuarios() {
             <p className="text-sm text-gray-500 mb-4 text-center">{user.cargo}</p>
 
             {/* abrir hover do perfil do usuario */}
-            <button className="text-green-700 font-medium text-sm hover:underline mt-auto">
-              Visualizar perfil
+            <button
+              onClick={() => abrirModal(user)} className="text-green-700 font-medium text-sm hover:underline mt-auto">
+                Visualizar perfil
             </button>
+
           </div>
         ))}
       </div>
+
+      {/* MODAL */}
+      {modalAberto && usuarioSelecionado && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-96 relative">
+            {/* Botão fechar */}
+            <button
+              onClick={fecharModal}
+              className="absolute top-3 right-3 text-xl text-gray-600 hover:text-black"
+            >
+              ✖
+            </button>
+
+            <div className="flex flex-col items-center">
+              <img
+                src={usuarioSelecionado.img_perfil || "/img/defaultUser.png"}
+                onError={(e) => (e.target.src = "/img/defaultUser.png")}
+                className="rounded-full object-cover mb-4"
+                style={{ width: "130px", height: "130px" }}
+                alt={`Foto de ${usuarioSelecionado.nome}`}
+              />
+
+              <h2 className="text-xl font-bold text-gray-800 text-center">
+                {usuarioSelecionado.nome} {usuarioSelecionado.sobrenome}
+              </h2>
+
+              <p className="text-gray-600">{usuarioSelecionado.cargo}</p>
+
+              <div className="mt-4 w-full text-left text-gray-700">
+                <p>
+                  <strong>Email:</strong> {usuarioSelecionado.email}
+                </p>
+                <p>
+                  <strong>Telefone:</strong> {usuarioSelecionado.telefone}
+                </p>
+                  {/* <strong>Status:</strong> {usuarioSelecionado.status} */}
+              </div>
+
+              {/* ---------- NOVOS BOTÕES ---------- */}
+              <div className="mt-6 w-full flex gap-3">
+                
+                {/* Botão Editar */}
+                <button
+                  onClick={() => editarUsuario(usuarioSelecionado)}
+                  style={Estilos.botaoVerde}>
+                    Editar
+                </button>
+
+                {/* Botão Ativar/Desativar */}
+                <button
+                  onClick={() => alternarStatus(usuarioSelecionado)}
+                  style={
+                    usuarioSelecionado.status === "ativo"
+                      ? Estilos.botaoVerde
+                      : Estilos.botaoVermelho
+                  }>
+                  {usuarioSelecionado.status === "ativo"
+                    ? "Desativar"
+                    : "Ativar"}
+                </button>
+                
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}        
+
    </div>
   );
 }
+
+
+
