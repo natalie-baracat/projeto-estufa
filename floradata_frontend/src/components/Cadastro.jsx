@@ -33,20 +33,35 @@ function Cadastro() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("nome", nome);
-    formData.append("sobrenome", sobrenome);
-    formData.append("usuario", usuario);
-    formData.append("email", email);
-    formData.append("id_cargo", cargo);
-    formData.append("telefone", telefone);
-    formData.append("senha", senha);
+    // const formData = new FormData();
+    // formData.append("nome", nome);
+    // formData.append("sobrenome", sobrenome);
+    // formData.append("usuario", usuario);
+    // formData.append("email", email);
+    // formData.append("id_cargo", cargo);
+    // formData.append("telefone", telefone);
+    // formData.append("senha", senha);
     // if (imgPerfil) formData.append("imgPerfil", imgPerfil);
+
+    // const resposta = await fetch(`${enderecoServidor}/usuarios/new`, {
+    //   method: "POST",
+    //   body: formData
+    // });
 
     const resposta = await fetch(`${enderecoServidor}/usuarios/new`, {
       method: "POST",
-      body: formData
-    });
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome,
+        sobrenome,
+        usuario,
+        email,
+        id_cargo: cargo,
+        telefone,
+        senha
+      }),
+});
+
 
     // Verifica se a resposta é JSON
     const conteudo = await resposta.text();
@@ -165,10 +180,10 @@ function Cadastro() {
                 <label>Cargo</label>
                 <select value={cargo} onChange={(e) => setCargo(e.target.value)} required>
                   <option value="">Selecione seu cargo</option>
-                  <option value="1">Técnico de Automação</option>
-                  <option value="2">Especialista em IOT</option>
-                  <option value="3">Analista de Dado</option>
-                  <option value="4">Agrônomo</option>
+                  <option value="3">Técnico de Automação</option>
+                  <option value="4">Especialista em IOT</option>
+                  <option value="5">Analista de Dado</option>
+                  <option value="1">Agrônomo</option>
                 </select>
               </div>
             <div className="input-group">
