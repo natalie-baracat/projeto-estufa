@@ -62,8 +62,8 @@ export default function Usuarios() {
             placeholder="Pesquisar usuários..."
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            className="w-full bg-white border border-green-400 rounded-xl py-3 pl-12 pr-4 
-                      text-gray-700 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+            className="w-full bg-white border border-lime-300 rounded-xl py-3 pl-12 pr-4 
+                      text-gray-700 shadow-sm focus:ring-2 focus:ring-lime-400 focus:outline-none"
           />
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-green-700 text-lg">
             🔍
@@ -74,8 +74,8 @@ export default function Usuarios() {
         <select
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
-          className="w-full sm:w-1/2 border border-green-400 rounded-xl py-3.5 px-3
-                    bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-green-500
+          className="w-full sm:w-1/2 border border-lime-300 rounded-xl py-3.5 px-3
+                    bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-lime-400
                     focus:outline-none"
         >
           <option value="">Todos os cargos</option>

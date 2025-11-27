@@ -18,6 +18,9 @@ const Botao = ({ tipo, children, width, height, onClick, type = "button" }) => {
       width: width || '100%',
       height: height || 'auto',
       maxWidth: '50%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',      
       ...(isHovered && {
         backgroundColor: '#6fa23e',
         border: '2px solid #43752d',
@@ -36,6 +39,9 @@ const Botao = ({ tipo, children, width, height, onClick, type = "button" }) => {
       width: width || '100%',
       height: height || 'auto',
       maxWidth: '50%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
       ...(isHovered && {
         backgroundColor: '#f6edb0',
         border: '2px solid #FFF8D8',
@@ -53,7 +59,9 @@ const Botao = ({ tipo, children, width, height, onClick, type = "button" }) => {
       transition: '0.3s',
       width: width || '100%',
       height: height || 'auto',
-      maxWidth: '50%',
+      maxWidth: '50%',      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
       ...(isHovered && {
         backgroundColor: '#b50d0d',
         border: '2px solid oklch(54.3% 0.708 6.12)',

@@ -22,9 +22,6 @@ import Usuarios from './Usuarios';
 import logo from "../assets/logo.png";
 import Layout from '../components/Layout';
 import logobranca from "../assets/Floradata-Branco-semfundo.png"
-import PlantioMorango from "./PlantioMorango.jsx"
-import PlantioMilho from "./PlantioMilho.jsx"
-
 
 export default function Principal() {
     const { dadosUsuario, setDadosUsuario, carregando } = useContext(UsuarioContext);
@@ -99,7 +96,7 @@ export default function Principal() {
                     <Link to='/' onClick={() => setMenuAberto(false)}
                         className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors.
                             duration-200 ${location.pathname == '/' ?
-                            'bg-[#4f952cc4] text-white text-sm' : 'hover:bg-[#b4d7a360]'}`}>
+                            'bg-[#4f952cc4] text-white' : 'hover:bg-[#b4d7a360]'}`}>
                         <MdGridView className='w-6 h-6 text-white' />
                         <span className='font-medium ml-2  md:hidden lg:block text-white h1Login'>Dashboard</span>
                     </Link>
@@ -199,9 +196,6 @@ export default function Principal() {
                         <Route path='/alertasenotificacoes' element={<AlertasNotificacoes />} />
                         <Route path='/configuracoes' element={<ConfiguracoesAutomacao />} />
                         <Route path='/diagnosticosistema' element={<DiagnosticoSistema />} />
-                        <Route path='/plantioMorango' element={<PlantioMorango />} />
-                        <Route path='/plantioMilho' element={<PlantioMilho />} />
-
                     </Routes>
                 </main>
             </section>

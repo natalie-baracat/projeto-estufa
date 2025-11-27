@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
 // import '../components/Login.css'
 import '../styles/Login.css'
 import Estilos from '../styles/Estilos';
 import Layout from '../components/Layout';
+import { enderecoServidor } from "../utils/utils";
 
 // --- Dados de Alerta de Exemplo (Integrados) ---
 const DADOS_ALERTAS = [
@@ -95,20 +96,44 @@ const getAlertaClasses = (nivel) => {
 };
 
 export default function PaginaAlertas() {
-  const [alertas, setAlertas] = useState(DADOS_ALERTAS);
-  const [mostrarTodos, setMostrarTodos] = useState(false); 
-  
-  // Limita o número de alertas visíveis por padrão, se houver muitos
-  const limitePadrao = 8;
-  const alertasExibidos = mostrarTodos ? alertas : alertas.slice(0, limitePadrao); 
+  const [alertas, setAlertas] = useState([]);  
+  const [mostrarTodos, setMostrarTodos] = useState(false);
 
-  // Use <Layout> se ele existir e for necessário. Se não, use apenas o <div>
+  //  BUSCA REAL DA API AQUI 
+  useEffect(() => {
+    async function carregarAlertas() {
+      try {
+        const resposta = await fetch(`${enderecoServidor}/AlertaNotificaçoes`);
+        const dados = await resposta.json();
+
+        console.log("ALERTAS DA API:", dados);
+        setAlertas(dados);
+
+      } catch (erro) {
+        console.log("Erro ao buscar alertas:", erro);
+      }
+    }
+
+    carregarAlertas(); 
+
+    const intervalo = setInterval(() => {
+      carregarAlertas(); 
+    }, 5000);
+
+    return () => clearInterval(intervalo);
+  }, []);
+
+ 
+  const limitePadrao = 8;
+  const alertasExibidos = mostrarTodos ? alertas : alertas.slice(0, limitePadrao);
+
+  
   return (
     <div> 
       {/* Container Principal da Página: Fundo, altura mínima e largura máxima */}
       <div className="min-h-screen">
         
-        {/* Cabeçalho da Página (Fixo no topo e responsivo) */}
+        {/* Cabeçalho da Página */}
         <header className="py-6 border-b border-lime-100 sticky top-0 z-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold leading-tight text-lime-800 flex items-center">
@@ -120,7 +145,7 @@ export default function PaginaAlertas() {
           </div>
         </header>
 
-        {/* Conteúdo Principal (Container de Alertas) */}
+        {/* Conteúdo Principal */}
         <main className="py-8 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
           
           {/* Grid Responsivo de Alertas */}
@@ -131,49 +156,44 @@ export default function PaginaAlertas() {
 
               return (
                 <div 
-                  key={alerta.id} 
-                  // Estilos: Borda esquerda para cor, sombra, transição
+                  key={alerta.id}
                   className={`p-4 border-l-4 rounded-lg shadow-md transition-all duration-300 cursor-pointer ${bg} hover:shadow-lg`}
                   onClick={() => alert(`Visualizar detalhes do Alerta ID: ${alerta.id}`)}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    {/* Ícone e Nível do Alerta */}
                     <div className={`font-extrabold text-lg flex items-center ${text}`}>
                       <span className="mr-2 text-xl">{icon}</span>
-                      {alerta.nivel.toUpperCase()}
+                      {alerta.nivel?.toUpperCase()}
                     </div>
-                    {/* Hora do Alerta */}
                     <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
                       {alerta.hora}
                     </span>
                   </div>
 
-                  {/* Título e Mensagem */}
                   <h3 className={`text-base font-semibold ${text} mb-1 truncate`}>
                     {alerta.titulo}
                   </h3>
+
                   <p className="text-sm text-gray-600 mb-2 line-clamp-2">
                     {alerta.mensagem}
                   </p>
 
-                  {/* Planta Relacionada */}
                   <p className="text-xs font-semibold text-gray-500 mt-2 p-1 bg-white rounded-md inline-block shadow-inner">
-                    🌱 {alerta.planta}
+                    {alerta.planta}
                   </p>
                 </div>
               );
             })}
-            
-            {/* Mensagem de Alertas Vazios */}
+
             {alertas.length === 0 && (
-                <div className="col-span-full bg-green-50 p-6 rounded-lg border-2 border-green-300 text-center">
-                    <p className="text-xl font-bold text-green-800">✅ Tudo Certo!</p>
-                    <p className="text-green-600 mt-1">Não há alertas críticos ou pendentes no momento.</p>
-                </div>
+              <div className="col-span-full bg-green-50 p-6 rounded-lg border-2 border-green-300 text-center">
+                <p className="text-xl font-bold text-green-800"> Tudo Certo!</p>
+                <p className="text-green-600 mt-1">Não há alertas no momento.</p>
+              </div>
             )}
           </div>
-          
-          {/* Botão de "Ver Mais" */}
+
+          {/* Botão de Ver Mais */}
           {alertas.length > limitePadrao && (
             <div className="w-full text-center mt-10">
               <button 
@@ -181,15 +201,14 @@ export default function PaginaAlertas() {
                 className="px-8 py-3 border-2 border-lime-500 text-lime-700 font-bold rounded-lg bg-white shadow-md hover:bg-lime-50 transition duration-300"
               >
                 {mostrarTodos 
-                  ? 'Recolher Alertas (Mostrar Menos)' 
-                  : `Ver Todos os ${alertas.length} Alertas Pendentes ❯`
+                  ? 'Recolher Alertas'
+                  : `Ver Todos os ${alertas.length} Alertas ❯`
                 }
               </button>
             </div>
           )}
 
         </main>
-        
       </div>
     </div>
   );
