@@ -1,5 +1,6 @@
 import React from 'react';
 import { MdLocationOn, MdCalendarToday, MdLocalFlorist } from 'react-icons/md';
+import Botao from './Botao';
 
 export default function ModalPlantio({ plantioSelecionado, fecharModal }) {
   return (
@@ -61,18 +62,9 @@ export default function ModalPlantio({ plantioSelecionado, fecharModal }) {
 
           {/* Botões */}
           <div className="mt-6 w-full flex gap-4">
-            <button
-              onClick={() => alert('Editando plantio...')}
-              className="w-full bg-lime-600 text-white py-2 rounded-md hover:bg-lime-700 transition"
-            >
-              Editar Plantio
-            </button>
-            <button
-              onClick={fecharModal}
-              className="w-full bg-gray-200 text-gray-600 py-2 rounded-md hover:bg-gray-300 transition"
-            >
-              Fechar
-            </button>
+            <Botao type='button' tipo="verde" width="500px" height="50px" onClick={() => alert('Editando plantio...')}>
+              Salvar Plantio
+            </Botao>
           </div>
         </div>
       </div>
