@@ -2,126 +2,122 @@ import React, { useEffect, useState } from "react";
 import { enderecoServidor } from "../utils/utils";
 
 export default function ControleInteligente() {
+  // modo: "AUTOMATICO" | "MANUAL"
   const [modo, setModo] = useState("AUTOMATICO");
-  const [comandoManual, setComandoManual] = useState("OFF");
+  // estado vindo do backend/ESP: "LIGADO" | "DESLIGADO" | null/"--"
   const [statusRele, setStatusRele] = useState("--");
-
-  // Dados do backend
+  // sensor
   const [umidadeSolo, setUmidadeSolo] = useState("--");
   const [condicaoSolo, setCondicaoSolo] = useState("--");
+  // travamento UX: true enquanto aguardamos confirmação do ESP
+  const [travado, setTravado] = useState(false);
 
-  // ✅ NOVO: Flag para evitar sobrescrever durante edição
-  const [editandoComando, setEditandoComando] = useState(false);
-
-  // ------------------------------------------
-  // BUSCAR STATUS ATUAL (/mqtt)
-  // ------------------------------------------
+  // ------------------------------------------------
+  // buscar status do backend (/mqtt)
+  // ------------------------------------------------
   const buscarStatus = async () => {
     try {
       const res = await fetch(`${enderecoServidor}/mqtt`);
       const dados = await res.json();
+      // atualiza dados sensoriais sempre
+      setUmidadeSolo(dados.umidadeSolo ?? "--");
+      setCondicaoSolo(dados.condicaoSolo ?? "--");
 
-      setUmidadeSolo(dados.umidadeSolo);
-      setCondicaoSolo(dados.condicaoSolo);
-      setStatusRele(dados.statusReleBomba);
-
-      // ✅ SÓ SINCRONIZA SE NÃO ESTIVER EDITANDO
-      if (modo === "MANUAL" && !editandoComando) {
-        setComandoManual(dados.statusReleBomba === "LIGADO" ? "ON" : "OFF");
+      // atualiza status do relé (fonte da verdade)
+      if (dados.statusReleBomba) {
+        setStatusRele(dados.statusReleBomba);
       }
 
+      // tambem atualiza o modo (caso o backend esteja informando isso)
+      if (dados.modoIrrigacao) {
+        setModo(dados.modoIrrigacao);
+      }
     } catch (err) {
       console.error("Erro ao buscar status:", err);
     }
   };
 
   useEffect(() => {
+    // busca inicial e polling
     buscarStatus();
     const interval = setInterval(buscarStatus, 2000);
     return () => clearInterval(interval);
-  }, [modo, editandoComando]); // ✅ Adiciona editandoComando como dependência
+  }, []);
 
-  // ------------------------------------------
-  // SALVAR CONFIGURAÇÕES
-  // ------------------------------------------
-  const salvar = async () => {
+  // ------------------------------------------------
+  // envia modo (AUTOMATICO / MANUAL) ao backend
+  // ------------------------------------------------
+  const toggleModo = async () => {
+    const novoModo = modo === "MANUAL" ? "AUTOMATICO" : "MANUAL";
+    // atualiza visual imediatamente
+    setModo(novoModo);
+
     try {
-      // 1 – Envia o modo
       await fetch(`${enderecoServidor}/controle/modo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ modo })
+        body: JSON.stringify({ modo: novoModo }),
+      });
+    } catch (err) {
+      console.error("Erro ao enviar modo:", err);
+      // em caso de erro, reverte visual (opcional)
+      setModo(modo);
+      return;
+    }
+
+    setTimeout(buscarStatus, 1000);
+  };
+
+  // ------------------------------------------------
+  // toggle manual: envia ON/OFF, mas o estado visual é controlado apenas por `statusRele`
+  // ------------------------------------------------
+  const handleToggleManual = async () => {
+    if (travado) return; // evita spam/cliques múltiplos
+
+    // fonte: statusRele === "LIGADO"
+    const ligadoAgora = statusRele === "LIGADO";
+    const novoComando = ligadoAgora ? "OFF" : "ON";
+
+    // trava UI
+    setTravado(true);
+
+    try {
+      await fetch(`${enderecoServidor}/controle/comando`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ comando: novoComando }),
       });
 
-      // 2 – Se manual, envia ON/OFF
-      if (modo === "MANUAL") {
-        await fetch(`${enderecoServidor}/controle/comando`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ comando: comandoManual })
-        });
-      }
-
-      alert("Configurações salvas!");
-      
-      // ✅ Libera a edição após salvar
-      setEditandoComando(false);
-      
-      // ✅ Aguarda um pouco e busca o status atualizado
-      setTimeout(buscarStatus, 2500);
-
+      // aguarda ESP processar e publicar novo status
+      // timeout alinhado com o loop do ESP (3s) e propagação
+      setTimeout(() => {
+        buscarStatus();
+        setTravado(false);
+      }, 2500);
     } catch (err) {
-      console.error("Erro ao salvar configurações:", err);
-      alert("Erro ao salvar.");
-      setEditandoComando(false);
+      console.error("Erro ao enviar comando manual:", err);
+      setTravado(false);
     }
   };
 
-// ✔ NOVA FUNÇÃO: Handler do toggle manual - ENVIA COMANDO IMEDIATAMENTE
-const handleToggleManual = async () => {
-  const novoComando = comandoManual === "ON" ? "OFF" : "ON";
-  setEditandoComando(true);
-  setComandoManual(novoComando);
-  
+  // ------------------------------------------------
+  // toggle visual: derivado do statusRele
+  // ------------------------------------------------
+  const toggleLigado = statusRele === "LIGADO";
 
-  try {
-    // Envia o comando imediatamente ao backend
-    await fetch(`${enderecoServidor}/controle/comando`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ comando: novoComando })
-    });
-
-    console.log(`Comando ${novoComando} enviado com sucesso`);
-    
-    // Aguarda um pouco e busca o status atualizado
-    setTimeout(() => {
-      buscarStatus();
-      setEditandoComando(false);
-    }, 500);
-
-  } catch (err) {
-    console.error("Erro ao enviar comando manual:", err);
-    alert("Erro ao enviar comando.");
-    setEditandoComando(false);
-  }
-};
-
-  // ------------------------------------------
-  // COMPONENTE TOGGLE
-  // ------------------------------------------
-  function Toggle({ checked, onChange }) {
+  function Toggle({ checked, onChange, disabled }) {
     return (
       <button
-        onClick={onChange}
-        className={`relative inline-flex items-center h-6 w-11 rounded-full transition ${
-          checked ? "bg-lime-400" : "bg-gray-300"
-        }`}
+        aria-pressed={checked}
+        aria-disabled={disabled}
+        onClick={disabled ? undefined : onChange}
+        className={`relative inline-flex items-center h-6 w-11 rounded-full transition
+          ${checked ? "bg-lime-400" : "bg-gray-300"}
+          ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
       >
         <span
-          className={`inline-block h-5 w-5 bg-white rounded-full transform transition ${
-            checked ? "translate-x-5" : "translate-x-1"
-          }`}
+          className={`inline-block h-5 w-5 bg-white rounded-full transform transition
+            ${checked ? "translate-x-5" : "translate-x-1"}`}
         />
       </button>
     );
@@ -130,49 +126,38 @@ const handleToggleManual = async () => {
   return (
     <div className="min-h-screen flex items-start justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-6 border border-gray-100">
-
         <h1 className="text-2xl font-semibold mb-4">Controle Inteligente</h1>
 
-        {/* MODE AUTO/MANUAL */}
+        {/* MODO AUTO / MANUAL */}
         <section className="p-4 bg-gray-50 rounded-lg border mb-6">
           <h2 className="text-lg font-medium">Modo de Irrigação</h2>
 
           <div className="flex items-center justify-between mt-3">
             <span className="text-sm text-gray-500">Automático</span>
-            <Toggle
-              checked={modo === "MANUAL"}
-              onChange={() => {
-                setModo(modo === "MANUAL" ? "AUTOMATICO" : "MANUAL");
-                setEditandoComando(false);
-              }}
-            />
+            <Toggle checked={modo === "MANUAL"} onChange={toggleModo} disabled={false} />
             <span className="text-sm text-gray-500">Manual</span>
           </div>
         </section>
 
-        {/* COMANDO MANUAL ON/OFF */}
+        {/* CONTROLE MANUAL (visível somente em MANUAL) */}
         {modo === "MANUAL" && (
           <section className="p-4 bg-gray-50 rounded-lg border mb-6">
             <h2 className="text-lg font-medium">Controle Manual</h2>
 
             <div className="flex items-center justify-between mt-3">
               <span className="text-sm text-gray-500">Desligado</span>
-              <Toggle
-                checked={comandoManual === "ON"}
-                onChange={handleToggleManual}
-              />
+
+              <Toggle checked={toggleLigado} onChange={handleToggleManual} disabled={travado} />
+
               <span className="text-sm text-gray-500">Ligado</span>
             </div>
 
             <p className="text-xs text-gray-500 mt-2">
               Status atual do relé: <b>{statusRele}</b>
             </p>
-            
-            {/* ✅ INDICADOR VISUAL DE MUDANÇA NÃO SALVA */}
-            {editandoComando && (
-              <p className="text-xs text-orange-600 mt-2 font-medium">
-                ⚠️ Clique em "Salvar Configurações" para aplicar
-              </p>
+
+            {travado && (
+              <p className="text-xs text-orange-600 mt-2 font-medium">⏳ Aguardando resposta da bomba...</p>
             )}
           </section>
         )}
@@ -188,18 +173,6 @@ const handleToggleManual = async () => {
             <b>Condição do Solo:</b> {condicaoSolo}
           </p>
         </section>
-
-        {/* BOTÃO SALVAR */}
-        <button
-          onClick={salvar}
-          className={`w-full py-3 rounded-lg shadow-md font-semibold transition ${
-            editandoComando 
-              ? "bg-orange-600 text-white animate-pulse" 
-              : "bg-lime-600 text-white"
-          }`}
-        >
-          {editandoComando ? "⚠️ Salvar Alterações" : "Salvar Configurações"}
-        </button>
       </div>
     </div>
   );
