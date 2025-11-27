@@ -2,14 +2,49 @@ import { BD } from "../db.js";
 
 class cultivosController {
     static async novo(req, res) {
+        const id_usuario = req.usuario.id
 
-        const { nome, variedade, img_cultivo, descricao, data_criacao, data_colheita, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao,
-            umid_min, umid_max, temp_min, temp_max //adicionei isso, precisa criar no banco
+        const { 
+            nome, 
+            variedade, 
+            img_cultivo, 
+            descricao, 
+            data_criacao, 
+            data_colheita,
+            estagio_atual,
+            dias_ciclo,
+            tipo_local,
+            substrato,
+            tipo_solo,
+            area_plantio,
+            adubacao,
+            umid_min,
+            umid_max //adicionei isso, precisa criar no banco
          } = req.body
 
         try {
-            const query = `INSERT INTO cultivos(nome, variedade, img_cultivo, descricao, data_criacao, data_colheita, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao, umid_min, umid_max, temp_min, temp_max, irrigacao_frequencia, irrigacao_duracao) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`
-            const valores = [nome, variedade, img_cultivo, descricao, data_criacao, data_colheita, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao, umid_min, umid_max, temp_min, temp_max, irrigacao_frequencia, irrigacao_duracao]
+            const dataCriacaoTimestamp = data_criacao ? new Date(data_criacao).toISOString() : null;
+            const dataColheitaTimestamp = data_colheita ? new Date(data_colheita).toISOString() : null;
+
+            const query = `INSERT INTO cultivos(
+                id_usuario,
+                nome,
+                variedade,
+                img_cultivo,
+                descricao,
+                data_criacao,
+                data_colheita,
+                estagio_atual,
+                dias_ciclo,
+                tipo_local,
+                substrato,
+                tipo_solo,
+                area_plantio,
+                adubacao,
+                umid_min,
+                umid_max
+                ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
+            const valores = [id_usuario, nome, variedade, img_cultivo, descricao, dataCriacaoTimestamp, dataColheitaTimestamp, estagio_atual, dias_ciclo, tipo_local, substrato, tipo_solo, area_plantio, adubacao, umid_min, umid_max]
             const resposta = await BD.query(query, valores)
 
             res.status(201).json("cultivo/plantio registrado com sucesso")
@@ -27,10 +62,21 @@ class cultivosController {
     static async listarTodos(req, res) {
         try {
             const cultivos = await BD.query(`
-                SELECT u.id_usuario, u.nome, u.sobrenome, r.id_usuario, r.titulo, r.conteudo, r.data_cultivo, r.id_cultivo, c.nome AS cultivo
-                    FROM cultivos AS r
-                    JOIN usuarios AS u ON u.id_usuario = r.id_usuario
-                    JOIN cultivos AS c ON c.id_cultivo = r.id_cultivo
+                SELECT  
+                    nome,
+                    variedade,
+                    img_cultivo,
+                    descricao,
+                    data_criacao,
+                    data_colheita,
+                    estagio_atual,
+                    dias_ciclo,
+                    tipo_local,
+                    substrato,
+                    tipo_solo,
+                    area_plantio,
+                    adubacao
+                FROM cultivos
                 `)
             return res.status(200).json(cultivos.rows)
         } catch (error) {

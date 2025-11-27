@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { MdLocalFlorist, MdCalendarToday, MdLocationOn,
   // MdImage, MdSensors 
   } from 'react-icons/md';
+import Estilos from '../styles/Estilos.jsx'
+import Botao from '../components/Botao.jsx';
 
 export default function NovoPlantio() {
   const navigate = useNavigate();
@@ -26,71 +28,79 @@ export default function NovoPlantio() {
   const [substrato, setSubstrato] = useState('');
   const [tipoSolo, setTipoSolo] = useState('');
 
-  
-  const [umidadeMin, setUmidadeMin] = useState('');
-  const [umidadeMax, setUmidadeMax] = useState('');
-  const [tempMin, setTempMin] = useState('');
-  const [tempMax, setTempMax] = useState('');
-  const [regaMin, setRegaMin] = useState('');
-  const [regaMax, setRegaMax] = useState('');
 
   // Função para salvar o plantio
-  async function SalvarPlantio(e) {
+async function SalvarPlantio(e) {
     e.preventDefault();
 
-    try{
-        // Validação basica de preenchimento
-        if (!nomePlantio || !especie){
+    try {
+        // Validação básica de preenchimento
+        if (!nomePlantio || !especie) {
             throw new Error("Preencha todos os campos obrigatórios");
         }
 
         if (dataPlantio && dataColheita && new Date(dataColheita) < new Date(dataPlantio)) {
-          throw new Error("A data de colheita não pode ser anterior à data de plantio.");
+            throw new Error("A data de colheita não pode ser anterior à data de plantio.");
         }
 
         const dadosPlantio = {
             nome: nomePlantio,
             variedade: especie,
             descricao: descricaoInicial,
-            data_criacao: dataPlantio,
-            data_colheita: dataColheita,
-            estagio_atual: estagioAtual,
+            data_criacao: dataPlantio || null,
+            data_colheita: dataColheita || null,
+            estagio_atual: estagioAtual || null,
             dias_ciclo: parseInt(tempoCiclo) || null,
             tipo_local: tipoCultivo,
-            area_plantio: setorCultivo,
-            adubacao,
-            substrato,
-            tipo_solo: tipoSolo,
-            umid_min: parseFloat(umidadeMin) || null,
-            umid_max: parseFloat(umidadeMax) || null,
-            };
+            area_plantio: setorCultivo || null,
+            adubacao: adubacao || null,
+            substrato: substrato || null,
+            tipo_solo: tipoSolo || null,
 
-            // chamada da API
-            const resposta = await fetch(`${enderecoServidor}/cultivos/new`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(dadosPlantio),
-            });
-            
-            // ler como texto
-            // const texto = await resposta.text();
-            console.log("Resposta do servidor:", texto);
-            console.log("Content-Type:", resposta.headers.get("content-type"));
+        };
 
+        console.log('Enviando dados:', dadosPlantio); 
 
-            if (!resposta.ok) {
-              const erro = await resposta.json();
-              throw new Error(erro.message || "Erro ao cadastrar plantio");
+        const token = localStorage.getItem('token');
+
+        // Chamada da API
+        const resposta = await fetch(`${enderecoServidor}/cultivos/new`, {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json', 
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(dadosPlantio),
+        });
+
+        console.log('Status da resposta:', resposta.status); // DEBUG
+
+        // Tentar ler a resposta como texto primeiro
+        const textoResposta = await resposta.text();
+        console.log('Resposta do servidor:', textoResposta); // DEBUG
+
+        if (!resposta.ok) {
+            // Tentar fazer parse do JSON se possível
+            try {
+                const erro = JSON.parse(textoResposta);
+                throw new Error(erro.message || "Erro ao cadastrar plantio");
+            } catch {
+                throw new Error(`Erro ${resposta.status}: ${textoResposta}`);
             }
-
-            alert('Plantio cadastrado com sucesso!✅');
-            resetCampos();
-            navigate("/dashboard")
-        } catch (error){
-            console.error('Erro ao cadastrar plantio: ', error);
-            alert(error.message);
         }
-    }   
+
+        const resultado = JSON.parse(textoResposta);
+        console.log("Plantio cadastrado:", resultado);
+
+        alert('Plantio cadastrado com sucesso! ✅');
+        resetCampos();
+        navigate("/");
+        
+    } catch (error) {
+        console.error('Erro ao cadastrar plantio: ', error);
+        alert(`Erro: ${error.message}`);
+    }
+}
 
   // Função para limpar sem confirmação (usada após salvar)
   function resetCampos() {
@@ -107,12 +117,7 @@ export default function NovoPlantio() {
     setAdubacao('');
     setSubstrato('');
     setTipoSolo('');
-    setUmidadeMin("");
-    setUmidadeMax("");
-    setTempMin("");
-    setTempMax("");
-    setRegaMin("");
-    setRegaMax("");
+
   }
 
   // Função para limpar os campos com confirmação
@@ -131,12 +136,7 @@ export default function NovoPlantio() {
       setAdubacao('');
       setSubstrato('');
       setTipoSolo('');
-      setUmidadeMin('');
-      setUmidadeMax('');
-      setTempMin('');
-      setTempMax('');
-      setRegaMin('');
-      setRegaMax('');
+
     }
   }
 
@@ -363,7 +363,7 @@ export default function NovoPlantio() {
 
 
           {/* Seção 5: Parâmetros Ideais */}
-          <section className="form-section fade-in">
+          {/* <section className="form-section fade-in">
             <h2 className="section-title">📊 Parâmetros Ideais para Monitoramento</h2>
             
             <div className="parametros-grid">
@@ -396,48 +396,22 @@ export default function NovoPlantio() {
                   </div>
                 </div>
               </div>
-
-              <div className="parametro-group">
-                <label className="parametro-label">Temperatura (°C):</label>
-                <div className="min-max-inputs">
-                  <div className="input-group-plantio">
-                    <label className="small-label">Mín:</label>
-                    <input
-                      type="number"
-                      value={tempMin}
-                      onChange={(e) => setTempMin(e.target.value)}
-                      placeholder="15"
-                      step="0.1"
-                    />
-                  </div>
-                  <div className="input-group-plantio">
-                    <label className="small-label">Máx:</label>
-                    <input
-                      type="number"
-                      value={tempMax}
-                      onChange={(e) => setTempMax(e.target.value)}
-                      placeholder="28"
-                      step="0.1"
-                    />
-                  </div>
-                </div>
               </div>
-            </div>
-          </section>
+          </section> */}
 
           {/* Seção 5: Associação com Sensores */}
 
           {/* Botões de Ação */}
           <div className="action-buttons">
-            <button type="submit" className="btn-salvar">
+            <Botao type="submit" tipo="verde" width="200px" height="50px">
               Salvar Plantio
-            </button>
-            <button type="button" onClick={limparCampos} className="btn-limpar">
+            </Botao>
+            <Botao type="button" tipo="bege" width="200px" height="50px" onClick={limparCampos}>
               Limpar Campos
-            </button>
-            <button type="button" onClick={cancelar} className="btn-cancelar">
+            </Botao>
+            <Botao type="button" tipo="vermelho" width="200px" height="50px" onClick={cancelar}>
               Cancelar
-            </button>
+            </Botao>
           </div>
         </form>
       </div>

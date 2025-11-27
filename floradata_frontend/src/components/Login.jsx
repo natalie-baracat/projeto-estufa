@@ -36,7 +36,9 @@ function Login() {
 
       const dados = await resposta.json();
       if (resposta.ok) {
+        localStorage.setItem('token', dados.token);
         localStorage.setItem('UsuarioLogado', JSON.stringify({ ...dados, lembrar }));
+        
 				setDadosUsuario(dados); //Gravando os dados do usuário no contexto
 				navigate("/")
       } else {

@@ -14,6 +14,7 @@ import sensoresRotas from "./routes/sensoresRotas.js"
 import atuadoresRotas from "./routes/atuadoresRotas.js"
 import MQTTsoloUmidadeRota from "./routes/MQTTsoloUmidadeRotas.js"
 import MQTTcontrolecomandosRotas from "./routes/MQTTcontrolecomandosRotas.js"
+import cultivosRotas from "./routes/cultivosRotas.js"
 
 
 const app = express()
@@ -36,6 +37,9 @@ app.use("/relatorios", relatorioRotas)
 
 /*~~~~~~~~~~~ ROTAS SENSORES ~~~~~~~~~~~~~~~~~~~*/
 app.use("/sensores", sensoresRotas)
+
+/*~~~~~~~~~~~ ROTAS CULTIVOS/PLANTIOS ~~~~~~~~~~~~~~~~~*/
+app.use("/cultivos", cultivosRotas)
 
 /*~~~~~~~~~~~ ROTAS ATUADORES ~~~~~~~~~~~~~~~~~*/
 app.use("/atuadores", atuadoresRotas)
