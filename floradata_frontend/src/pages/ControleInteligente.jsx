@@ -68,7 +68,7 @@ export default function ControleInteligente() {
       setEditandoComando(false);
       
       // ✅ Aguarda um pouco e busca o status atualizado
-      setTimeout(buscarStatus, 500);
+      setTimeout(buscarStatus, 2500);
 
     } catch (err) {
       console.error("Erro ao salvar configurações:", err);
@@ -77,11 +77,35 @@ export default function ControleInteligente() {
     }
   };
 
-  // ✅ NOVA FUNÇÃO: Handler do toggle manual
-  const handleToggleManual = () => {
-    setEditandoComando(true);
-    setComandoManual(comandoManual === "ON" ? "OFF" : "ON");
-  };
+// ✔ NOVA FUNÇÃO: Handler do toggle manual - ENVIA COMANDO IMEDIATAMENTE
+const handleToggleManual = async () => {
+  const novoComando = comandoManual === "ON" ? "OFF" : "ON";
+  setEditandoComando(true);
+  setComandoManual(novoComando);
+  
+
+  try {
+    // Envia o comando imediatamente ao backend
+    await fetch(`${enderecoServidor}/controle/comando`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ comando: novoComando })
+    });
+
+    console.log(`Comando ${novoComando} enviado com sucesso`);
+    
+    // Aguarda um pouco e busca o status atualizado
+    setTimeout(() => {
+      buscarStatus();
+      setEditandoComando(false);
+    }, 500);
+
+  } catch (err) {
+    console.error("Erro ao enviar comando manual:", err);
+    alert("Erro ao enviar comando.");
+    setEditandoComando(false);
+  }
+};
 
   // ------------------------------------------
   // COMPONENTE TOGGLE
@@ -104,7 +128,7 @@ export default function ControleInteligente() {
   }
 
   return (
-    <div className="min-h-screen flex items-start justify-center p-4 bg-gray-50">
+    <div className="min-h-screen flex items-start justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-6 border border-gray-100">
 
         <h1 className="text-2xl font-semibold mb-4">Controle Inteligente</h1>

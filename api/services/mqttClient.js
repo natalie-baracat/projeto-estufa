@@ -32,7 +32,7 @@ const mqttOptions = {
     password: MQTT_PASSWORD,
     protocol: 'mqtts',
     reconnectPeriod: 1000,
-    clientId: 'sensor_chuva_solo'
+    clientId: 'backendmqtt'
 };
 
 function conectarMqtt(){

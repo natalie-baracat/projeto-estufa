@@ -31,12 +31,14 @@ router.post("/modo", (req, res) => {
  */
 router.post("/comando", (req, res) => {
     const { comando } = req.body;
+     console.log(">>> BACKEND RECEBEU comando:", comando);
 
     if (!comando || !["ON", "OFF"].includes(comando)) {
         return res.status(400).json({ erro: "Comando inválido" });
     }
 
     publicar(TOPICO_COMANDO_BOMBA, comando);
+    console.log(">>> BACKEND PUBLICOU comando:", comando);
 
     return res.json({ ok: true, comando });
 });
