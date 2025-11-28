@@ -107,7 +107,7 @@ useEffect(() => {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 w-full">
         {plantiosFiltrados.length > 0 ? (
           plantiosFiltrados.map((p) => (
-            <div
+            <div onClick={() => abrirModal(p)} 
               key={p.id_cultivo}
               className="bg-white rounded-xl shadow-lg border border-lime-100 overflow-hidden hover:shadow-xl hover:border-lime-300 transition-all duration-300 cursor-pointer"
             >
@@ -122,13 +122,6 @@ useEffect(() => {
               <div className="p-3 text-center">
                 <h3 className="text-sm md:text-base font-bold text-lime-800 truncate">{p.nome}</h3>
               </div>
-
-              <button
-                onClick={() => abrirModal(p)} 
-                className="text-green-700 font-medium text-sm hover:underline mt-auto"
-              >
-                Visualizar detalhes
-              </button>
             </div>
           ))
         ) : (
@@ -145,7 +138,7 @@ useEffect(() => {
       )}
 
       {/* Botão Novo */}
-      <div className="fixed right-6 top-15">
+      <div className="fixed right-8 top-15">
         {/* Botão para adicionar novo plantio */}
         <Botao type="button" tipo="verde" width="200px" height="40px" onClick={() => navigate("/novoplantio")}>
           + Novo
