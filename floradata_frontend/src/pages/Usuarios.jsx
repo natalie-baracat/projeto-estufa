@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import "../styles/Login.css";
 import Estilos from "../styles/Estilos.jsx";
+import Botao from "../components/Botao.jsx"
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -13,15 +14,49 @@ export default function Usuarios() {
 
   // Carregar usuários da API
   useEffect(() => {
+    // async function buscarUsuarios() {
+    //   try {
+    //     const resposta = await fetch("http://localhost:3000/usuarios");
+    //     const dados = await resposta.json();
+    //     setUsuarios(dados);
+    //   } catch (erro) {
+    //     console.error("Erro ao carregar usuários:", erro);
+    //   }
+    // }
+
     async function buscarUsuarios() {
-      try {
-        const resposta = await fetch("http://localhost:3000/usuarios");
-        const dados = await resposta.json();
-        setUsuarios(dados);
-      } catch (erro) {
-        console.error("Erro ao carregar usuários:", erro);
-      }
+  try {
+    const token = localStorage.getItem('token'); // Obter o token do localStorage
+
+    if (!token) {
+      throw new Error('Token não encontrado, por favor faça login novamente.');
     }
+
+    const resposta = await fetch("http://localhost:3000/usuarios", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!resposta.ok) {
+      throw new Error('Falha ao carregar os usuários');
+    }
+
+    const dados = await resposta.json();
+
+    // Verificar se dados é um array
+    if (Array.isArray(dados)) {
+      setUsuarios(dados); // Se for um array, defina diretamente os dados
+    } else {
+      console.error("Formato de resposta inesperado", dados);
+    }
+  } catch (erro) {
+    console.error("Erro ao carregar usuários:", erro);
+  }
+}
+
 
     buscarUsuarios();
   }, []);
@@ -159,14 +194,20 @@ export default function Usuarios() {
               <div className="mt-6 w-full flex gap-3">
                 
                 {/* Botão Editar */}
-                <button
-                  onClick={() => editarUsuario(usuarioSelecionado)}
-                  style={Estilos.botaoVerde}>
-                    Editar
-                </button>
+                <Botao onClick={() => editarUsuario(usuarioSelecionado)}
+                 tipo="verde" width="200px" height="50px">
+                  Editar
+                </Botao>
 
                 {/* Botão Ativar/Desativar */}
-                <button
+                <Botao
+                  tipo={usuarioSelecionado.status === "ativo" ? "vermelho" : "verde"}
+                  width="200px"
+                  height="50px"
+                >
+                  {usuarioSelecionado.status === "ativo" ? "Desativar" : "Ativar"}
+                </Botao>
+                {/* <button
                   onClick={() => alternarStatus(usuarioSelecionado)}
                   style={
                     usuarioSelecionado.status === "ativo"
@@ -176,7 +217,7 @@ export default function Usuarios() {
                   {usuarioSelecionado.status === "ativo"
                     ? "Desativar"
                     : "Ativar"}
-                </button>
+                </button> */}
                 
               </div>
 
