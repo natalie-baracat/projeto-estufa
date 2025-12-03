@@ -1,27 +1,32 @@
-import { onMessage, TOPICO_UMIDADE_SOLO, TOPICO_CONDICAO_SOLO, TOPICO_STATUS_RELE_BOMBA } from "../services/mqttClient.js";
+import { onMessage, /*TOPICO_UMIDADE_SOLO, TOPICO_CONDICAO_SOLO, */ TOPICO_STATUS_RELE_BOMBA, TOPICO_SOLO } from "../services/mqttClient.js";
 
-let umidadeSolo = "";
-let condicaoSolo = "";
-let statusReleBomba = "";
+let ultimaLeituraSolo = null;   // vai guardar { id_sensor, valor, faixa }
+let statusReleBomba = "";       // status da bomba (LIGADO/DESLIGADO)
 
-onMessage(TOPICO_UMIDADE_SOLO, (message) => {
-    umidadeSolo = message;
-})
+// Recebe a leitura completa do solo via JSON
+onMessage(TOPICO_SOLO, (message) => {
+    try {
+        const dado = JSON.parse(message);
+        ultimaLeituraSolo = dado;  // exemplo: { id_sensor: 5, valor: 2300, faixa: "SECO" }
+    } catch (erro) {
+        console.error("Erro ao interpretar JSON do solo:", erro);
+    }
+});
 
-onMessage(TOPICO_CONDICAO_SOLO, (message2) => {
-    condicaoSolo = message2;
-})
-
-onMessage(TOPICO_STATUS_RELE_BOMBA, (message3) => {
-    statusReleBomba = message3;
-})
+// Recebe status do relé (bomba d'água)
+onMessage(TOPICO_STATUS_RELE_BOMBA, (message) => {
+    statusReleBomba = message; // "LIGADO" ou "DESLIGADO"
+});
 
 class MQTTsoloUmidadeRota {
     static lerDadosSensor(req, res) {
         try {
-            res.status(200).json({umidadeSolo, condicaoSolo, statusReleBomba})
+            res.status(200).json({
+                solo: ultimaLeituraSolo,
+                statusReleBomba
+            });
         } catch (error) {
-            res.status(500).json({message: "Erro interno ao obter status"})
+            res.status(500).json({ message: "Erro interno ao obter dados MQTT" });
         }
     }
 }

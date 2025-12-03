@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, Droplets, AlertTriangle, Sprout } from 'lucide-react';
+import Botao from '../components/Botao.jsx'
 
 import { enderecoServidor } from '../utils/utils.jsx';
 
@@ -155,14 +156,21 @@ export default function TesteDiag() {
           <div className="text-sm text-gray-500 mb-4">
             Última Verificação: {ultimaAtualizacao}
           </div>
-          <button
+          {/* <button
             onClick={atualizar}
             className="w-full md:w-auto !text-white font-semibold py-3 px-6 rounded border-2 border-[#7ccf00] transition-colors flex items-center justify-center gap-2"
             style={{backgroundColor: "oklch(64.8% 0.2 131.684)"}}
           >
             <RefreshCw className="w-5 h-5 text-white" />
             ATUALIZAR DIAGNÓSTICO
-          </button>
+          </button> */}
+          <div className="md:w-1/3">
+          <Botao type="button" tipo="verde" height="50px" onClick={atualizar} className="md:w-1/3">
+              <RefreshCw className="w-5 h-5 text-white" />
+              ATUALIZAR DIAGNÓSTICO
+            </Botao>
+          </div>
+          
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

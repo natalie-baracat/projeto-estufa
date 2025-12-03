@@ -15,7 +15,8 @@ import atuadoresRotas from "./routes/atuadoresRotas.js"
 import MQTTsoloUmidadeRota from "./routes/MQTTsoloUmidadeRotas.js"
 import MQTTcontrolecomandosRotas from "./routes/MQTTcontrolecomandosRotas.js"
 import cultivosRotas from "./routes/cultivosRotas.js"
-
+import umidadeSoloRoutes from "./routes/umidadeSoloRotas.js";
+import umidadeSoloViewRotas from "./routes/umidadeSoloViewRotas.js";
 
 const app = express()
 testarConexao()
@@ -50,6 +51,11 @@ app.use("/leituras", leiturasRotas)
 /*~~~~~~~~~~~ ROTAS MQTT ~~~~~~~~~~~~~~~~~*/
 app.use("/mqtt", MQTTsoloUmidadeRota.lerDadosSensor)
 app.use("/controle", MQTTcontrolecomandosRotas)
+
+/*~~~~~~~~~~~ ROTAS UMIDADE (PARA GRAFICOS) ~~~~~~~~~~~~~~~~~*/
+app.use("/umidade-solo", umidadeSoloRoutes);
+app.use("/umidade-solo-horaria", umidadeSoloViewRotas);
+
 
 
 const porta = 3000
