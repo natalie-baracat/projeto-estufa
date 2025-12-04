@@ -12,11 +12,14 @@ import relatorioRotas from "./routes/relatoriosRotas.js"
 import leiturasRotas from "./routes/leiturasRotas.js"
 import sensoresRotas from "./routes/sensoresRotas.js"
 import atuadoresRotas from "./routes/atuadoresRotas.js"
-import MQTTsoloUmidadeRota from "./routes/MQTTsoloUmidadeRotas.js"
-import MQTTcontrolecomandosRotas from "./routes/MQTTcontrolecomandosRotas.js"
 import cultivosRotas from "./routes/cultivosRotas.js"
+// import MQTTsoloUmidadeRota from "./routes/MQTTsoloUmidadeRotas.js"
+// import MQTTcontrolecomandosRotas from "./routes/MQTTcontrolecomandosRotas.js"
 import umidadeSoloRoutes from "./routes/umidadeSoloRotas.js";
 import umidadeSoloViewRotas from "./routes/umidadeSoloViewRotas.js";
+import umidadeSoloUltimasRotas from "./routes/umidadeSoloUltimasRotas.js";
+
+import controleRotas from "./routes/controleRotas.js";
 
 const app = express()
 testarConexao()
@@ -49,13 +52,14 @@ app.use("/atuadores", atuadoresRotas)
 app.use("/leituras", leiturasRotas)
 
 /*~~~~~~~~~~~ ROTAS MQTT ~~~~~~~~~~~~~~~~~*/
-app.use("/mqtt", MQTTsoloUmidadeRota.lerDadosSensor)
-app.use("/controle", MQTTcontrolecomandosRotas)
+// app.use("/mqtt", MQTTsoloUmidadeRota.lerDadosSensor)
+// app.use("/controle", MQTTcontrolecomandosRotas)
+app.use("/controle-mqtt", controleRotas);
 
 /*~~~~~~~~~~~ ROTAS UMIDADE (PARA GRAFICOS) ~~~~~~~~~~~~~~~~~*/
 app.use("/umidade-solo", umidadeSoloRoutes);
 app.use("/umidade-solo-horaria", umidadeSoloViewRotas);
-
+app.use("/umidade-solo", umidadeSoloUltimasRotas);
 
 
 const porta = 3000

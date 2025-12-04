@@ -10,11 +10,16 @@ const MQTT_BROKER_PORT = 8883;
 const MQTT_USERNAME = "natalie";
 const MQTT_PASSWORD = "Mercipourlevenin7";
 
-// Tópicos (agora usamos um tópico único para leituras do solo)
+// adicionar/alterar no mqttClient.js
 const TOPICO_SOLO = "floradata/26/solo";
-const TOPICO_COMANDO_BOMBA_AGUA = "floradata/26/bombaagua";
-const TOPICO_STATUS_RELE_BOMBA = "floradata/26/statusRele";
+const TOPICO_BOMBA1 = "floradata/26/bomba1";
+const TOPICO_BOMBA2 = "floradata/26/bomba2";
+const TOPICO_BOMBA3 = "floradata/26/bomba3";
 const TOPICO_MODO_IRRIGACAO = "floradata/26/modoIrrigacao";
+const TOPICO_STATUS_BOMBA1 = "floradata/26/statusBomba1";
+const TOPICO_STATUS_BOMBA2 = "floradata/26/statusBomba2";
+const TOPICO_STATUS_BOMBA3 = "floradata/26/statusBomba3";
+
 
 let mqttClient;
 let subscriptions = {};
@@ -36,26 +41,57 @@ function conectarMqtt(){
     mqttClient.on('connect', () => {
         console.log("Yippieee!!! Conectado com sucesso!");
 
-        // subscrever apenas nos tópicos necessários
         mqttClient.subscribe(TOPICO_SOLO, (err) => {
             if(!err) console.log(`Inscrito no tópico ${TOPICO_SOLO}`);
             else console.error(`Erro ao se inscrever em ${TOPICO_SOLO}:`, err);
         });
 
-        mqttClient.subscribe(TOPICO_COMANDO_BOMBA_AGUA, (err) => {
-            if (!err) console.log(`Inscrito no tópico ${TOPICO_COMANDO_BOMBA_AGUA}`);
-            else console.error(`Erro ao se inscrever em ${TOPICO_COMANDO_BOMBA_AGUA}:`, err);
-        });
+        // mqttClient.subscribe(TOPICO_COMANDO_BOMBA_AGUA, (err) => {
+        //     if (!err) console.log(`Inscrito no tópico ${TOPICO_COMANDO_BOMBA_AGUA}`);
+        //     else console.error(`Erro ao se inscrever em ${TOPICO_COMANDO_BOMBA_AGUA}:`, err);
+        // });
 
-        mqttClient.subscribe(TOPICO_STATUS_RELE_BOMBA, (err) => {
-            if (!err) console.log(`Inscrito no tópico ${TOPICO_STATUS_RELE_BOMBA}`);
-            else console.error(`Erro ao se inscrever em ${TOPICO_STATUS_RELE_BOMBA}:`, err);
-        });
+        // mqttClient.subscribe(TOPICO_STATUS_RELE_BOMBA, (err) => {
+        //     if (!err) console.log(`Inscrito no tópico ${TOPICO_STATUS_RELE_BOMBA}`);
+        //     else console.error(`Erro ao se inscrever em ${TOPICO_STATUS_RELE_BOMBA}:`, err);
+        // });
 
         mqttClient.subscribe(TOPICO_MODO_IRRIGACAO, (err) => {
             if (!err) console.log(`Inscrito no tópico ${TOPICO_MODO_IRRIGACAO}`);
             else console.error(`Erro ao se inscrever em ${TOPICO_MODO_IRRIGACAO}:`, err);
         });
+  
+        mqttClient.subscribe(TOPICO_BOMBA1, (err) => {
+            if (!err) console.log(`Inscrito no tópico ${TOPICO_BOMBA1}`);
+            else console.error(`Erro ao se inscrever em ${TOPICO_BOMBA1}:`, err);
+        });
+
+        mqttClient.subscribe(TOPICO_BOMBA2, (err) => {
+            if (!err) console.log(`Inscrito no tópico ${TOPICO_BOMBA2}`);
+            else console.error(`Erro ao se inscrever em ${TOPICO_BOMBA2}:`, err);
+        });
+
+        mqttClient.subscribe(TOPICO_BOMBA3, (err) => {
+            if (!err) console.log(`Inscrito no tópico ${TOPICO_BOMBA3}`);
+            else console.error(`Erro ao se inscrever em ${TOPICO_BOMBA3}:`, err);
+        });
+
+        mqttClient.subscribe(TOPICO_STATUS_BOMBA2, (err) => {
+            if (!err) console.log(`Inscrito no tópico ${TOPICO_STATUS_BOMBA2}`);
+            else console.error(`Erro ao se inscrever em ${TOPICO_STATUS_BOMBA2}:`, err);
+        });
+
+        mqttClient.subscribe(TOPICO_STATUS_BOMBA2, (err) => {
+            if (!err) console.log(`Inscrito no tópico ${TOPICO_STATUS_BOMBA2}`);
+            else console.error(`Erro ao se inscrever em ${TOPICO_STATUS_BOMBA2}:`, err);
+        });
+
+        mqttClient.subscribe(TOPICO_STATUS_BOMBA3, (err) => {
+            if (!err) console.log(`Inscrito no tópico ${TOPICO_STATUS_BOMBA3}`);
+            else console.error(`Erro ao se inscrever em ${TOPICO_STATUS_BOMBA3}:`, err);
+        });
+
+
     });
 
     mqttClient.on("message", async (topic, message) => {
@@ -146,7 +182,13 @@ export {
     publicar,
     onMessage,
     TOPICO_SOLO,
-    TOPICO_COMANDO_BOMBA_AGUA,
-    TOPICO_STATUS_RELE_BOMBA,
-    TOPICO_MODO_IRRIGACAO
+    // TOPICO_COMANDO_BOMBA_AGUA,
+    // TOPICO_STATUS_RELE_BOMBA,
+    TOPICO_MODO_IRRIGACAO,
+    TOPICO_BOMBA1,
+    TOPICO_BOMBA2,
+    TOPICO_BOMBA3,
+    TOPICO_STATUS_BOMBA1,
+    TOPICO_STATUS_BOMBA2,
+    TOPICO_STATUS_BOMBA3
 };

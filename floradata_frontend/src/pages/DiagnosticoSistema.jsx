@@ -19,38 +19,72 @@ export default function TesteDiag() {
   const [alertas, setAlertas] = useState([]);
 
   const buscarStatus = async () => {
-    try {
-      const resposta = await fetch(`${enderecoServidor}/mqtt`);
-      const dados = await resposta.json();
-      setUmidadeSolo(dados.umidadeSolo);
-      setCondicaoSolo(dados.condicaoSolo);
+  try {
+    // 1) Buscar status das bombas
+    const respControle = await fetch(`${enderecoServidor}/controle-mqtt/status`);
+    const dadosControle = await respControle.json();
 
-      const statusBomba = dados.statusReleBomba;   // <= vem do TOPICO_STATUS_RELE_BOMBA
-      const agora = new Date();
-      const horaFormatada = `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`;
+    // 2) Buscar últimas leituras dos sensores de solo
+    const respSolo = await fetch(`${enderecoServidor}/umidade-solo/ultimas`);
+    const sensores = await respSolo.json();
 
-      // transformar LIGADO/DESLIGADO em “ativo/inativo”
-      const novoStatus =
-        statusBomba === "LIGADO"
-          ? "ativo"
-          : "inativo";
+    // --- NOVA LÓGICA: processar os cinco sensores ---
 
-      // atualizar componente no frontend
-      setComponentes(anterior =>
-        anterior.map(comp =>
-          comp.nome === "Sistema de Irrigação"
-            ? { ...comp, status: novoStatus, hora: horaFormatada }
-            : comp
-        )
-      );
+    if (sensores.length > 0) {
+      // pega menor umidade entre os sensores
+      const menorValor = Math.min(...sensores.map(s => s.valor));
 
-      atualizarHora()
+      // pega sensor correspondente à menor leitura
+      const sensorCritico = sensores.find(s => s.valor === menorValor);
 
+      // atualizar UI baseada na menor umidade
+      setUmidadeSolo(sensorCritico.valor);
+      setCondicaoSolo(sensorCritico.faixa);
 
-    } catch (error) {
-      console.error("erro ao buscar status", error);
+      verificarUmidadeSolo(sensorCritico.valor);
     }
-  };
+
+    // SISTEMA DE IRRIGAÇÃO
+    const algumaLigada =
+      dadosControle.bomba1 === "LIGADO" ||
+      dadosControle.bomba2 === "LIGADO" ||
+      dadosControle.bomba3 === "LIGADO";
+
+    const agora = new Date();
+    const horaFormatada =
+      `${String(agora.getHours()).padStart(2, "0")}:${String(agora.getMinutes()).padStart(2, "0")}`;
+
+    // Atualizar cards
+    setComponentes((anterior) =>
+      anterior.map((comp) => {
+        if (comp.nome === "Sistema de Irrigação") {
+          return {
+            ...comp,
+            status: algumaLigada ? "ativo" : "inativo",
+            hora: horaFormatada,
+          };
+        }
+
+        if (comp.nome === "Sensor Umidade do Solo") {
+          const ativo = sensores.length > 0;
+          return {
+            ...comp,
+            status: ativo ? "ativo" : "inativo",
+            hora: horaFormatada,
+          };
+        }
+
+        return comp;
+      })
+    );
+
+    atualizarHora();
+
+  } catch (err) {
+    console.error("Erro ao buscar status:", err);
+  }
+};
+
 
   useEffect(() => {
     setInterval(() => {
@@ -65,32 +99,13 @@ export default function TesteDiag() {
     setUltimaAtualizacao(formatado);
   };
 
-
-  // const verificarTemperatura = (temp) => {
-  //   if (temp > 30) {
-  //     adicionarAlerta('erro', `Temperatura muito alta: ${temp.toFixed(1)}°C (ideal: 18-25°C)`);
-  //   } else if (temp < 15) {
-  //     adicionarAlerta('aviso', `Temperatura baixa: ${temp.toFixed(1)}°C (ideal: 18-25°C)`);
-  //   } else {
-  //     removerAlerta('Temperatura');
-  //   }
-  // };
-
-  // const verificarUmidade = (umidade) => {
-  //   if (umidade < 60) {
-  //     adicionarAlerta('aviso', `Umidade do ar baixa: ${umidade.toFixed(1)}% (ideal: 60-80%)`);
-  //   } else if (umidade > 85) {
-  //     adicionarAlerta('aviso', `Umidade do ar alta: ${umidade.toFixed(1)}% (ideal: 60-80%)`);
-  //   } else {
-  //     removerAlerta('Umidade do ar');
-  //   }
-  // };
-
-  const verificarUmidadeSolo = (umidade) => {
+  const verificarUmidadeSolo = (umidade,faixa) => {
     if (umidade < 30) {
       adicionarAlerta('erro', `Solo muito seco: ${umidade.toFixed(1)}% - Irrigação necessária`);
     } else if (umidade < 50) {
       adicionarAlerta('aviso', `Umidade do solo baixa: ${umidade.toFixed(1)}%`);
+    } else  if (faixa === "Encharcado") {
+    adicionarAlerta('erro', `Solo encharcado — excesso de água!`);
     } else {
       removerAlerta('Solo');
     }
